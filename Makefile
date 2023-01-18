@@ -3,14 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+         #
+#    By: chillion <chillion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/01 12:07:22 by chillion          #+#    #+#              #
-#    Updated: 2023/01/16 10:57:40 by mgruson          ###   ########.fr        #
+#    Updated: 2023/01/16 11:37:22 by chillion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-.PHONY : all test testb lldb lldbb bonus norm clean fclean re
+.PHONY : all test norm clean fclean re
 
 NAME := cub3d.a
 SOFT_NAME := cub3d
@@ -50,7 +50,11 @@ BOBJ = $(addprefix $(OBJ_DIR),$(BOBJS))
 
 OBJF := .cache_exists
 
-all : ${LIBFT} ${NAME} ${SOFT_NAME}
+all : $(OBJF) ${LIBFT} ${SOFT_NAME}
+
+$(OBJF) :
+	@touch .cache_exists
+	@mkdir -p ${OBJ_DIR}
 
 ${LIBFT} :
 	${MAKE} all -C libs/minilibx-linux
@@ -62,24 +66,21 @@ ${NAME} : ${OBJ}
 	${AR} ${NAME} ${MLX} ${OBJ}
 	@echo "${NC}"
 
-${OBJ_DIR}%.o : %.c | $(OBJF)
+${OBJ_DIR}%.o : %.c
 	@echo "${BLUE}###${NC}Creation du fichier ${@:%.c=%.o}${BLUE}###${ORANGE}"
 	${CC} ${FLAGS} ${MLXFLAGS} -c $< -o $@
 	@echo "${NC}"
 
-${SOFT_NAME} :
+${SOFT_NAME} : ${NAME}
 	@echo "${BLUE}###${NC}Creation du fichier ${SOFT_NAME}${BLUE}###${ORANGE}"
 	${CC} ${NAME} ${FLAGS} ${MLXFLAGS} -o ${SOFT_NAME}
 	@echo "${NC}"
-
-$(OBJF) :
-	@mkdir -p ${OBJ_DIR}
 
 clean : 
 	${FCLIB}
 	${CMLX}
 	@echo "${RED}###${NC}Nettoyage des fichiers .o${RED}###"
-	${RM} -rf ${OBJ_DIR}
+	${RM} -rf ${OBJ_DIR} ${OBJF}
 	@echo "${GREEN}###${NC}Nettoyage OK${GREEN}###${NC}\n"
 
 fclean : clean
