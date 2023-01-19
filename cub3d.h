@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:54:34 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/17 17:05:16 by chillion         ###   ########.fr       */
+/*   Updated: 2023/01/19 17:52:15 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,6 @@
 # include <X11/X.h>
 # include <X11/keysym.h>
 # include <math.h>
+# include <complex.h>
 
 #endif
