@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:46:25 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/19 20:40:24 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/20 15:37:48 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,17 +178,17 @@ long double find_end_y(double degree)
 	return (res * -1);
 }
 
-void ft_draw_line_dir(t_v *v, int y, int x, long double degree, long double i, int *tab)
+void ft_draw_line_dir(t_v *v, int y, int x, long double degree, long double i, double *tab)
 {
 	(void)y;
 	long double pi = 3.1415926535897932384626433832;
 	// int degree = 270;
 	long double resultx = find_end_x(degree + i); //arrondi
 	long double resulty = find_end_y(degree + i); //arrondi
-	printf("resultx : %Lf et resulty : %Lf\n", resultx, resulty);
+	// printf("resultx : %Lf et resulty : %Lf\n", resultx, resulty);
 	long double endx = ((x * XSIZE) + resultx);
 	long double endy = ((y * XSIZE) + resulty); // + pca on renvoie - ou + indifferement
-	printf("endx : %Lf et endy : %Lf\n", endx, endy);
+	// printf("endx : %Lf et endy : %Lf\n", endx, endy);
 	long double deltax = endx - (x * XSIZE) ;
 	long double deltay = endy - (y * XSIZE);
 	long double pixelx = (x * XSIZE) + (XSIZE / 2);
@@ -198,7 +198,7 @@ void ft_draw_line_dir(t_v *v, int y, int x, long double degree, long double i, i
 	int pixels = sqrt((deltax * deltax) + (deltay * deltay));
 	deltax /= pixels;
 	deltay /= pixels;
-	printf("degree %Lf, i %Lf, (degree + i) %Lf\n", degree, i, (degree + i));
+	// printf("degree %Lf, i %Lf, (degree + i) %Lf\n", degree, i, (degree + i));
 	long double view = 30 - i; ;
 	if (view < 0)
 		view *= -1;
@@ -206,12 +206,10 @@ void ft_draw_line_dir(t_v *v, int y, int x, long double degree, long double i, i
 	{
 		if (v->m.map[(int)pixely / XSIZE][(int)pixelx / XSIZE] == '1')
 		{
-			printf("(y * XSIZE) %i, pixely %Lf\n", (y * XSIZE), pixely);
 			*tab = ((y * XSIZE) - pixely) * csinl((90) * pi / 180) / csinl((180 - 90 - (view)) * pi / 180);				
 			// il faut peut etre stocker pixely du centre. comment faire ? lancer un rayon a angle 0 et le garder
-			printf("view = %Lf, *tab %d\n", view, *tab);
 			*tab = *tab * ccosl((view) * pi / 180);
-			printf("*tab %d\n", *tab);
+			// printf("*tab %d\n", *tab);
 			return ;
 		}
 		ft_my_mlx_pixel_put(&v->ig, pixely, pixelx, ft_rgb_to_int(0, 50, 150, 250));
@@ -222,36 +220,38 @@ void ft_draw_line_dir(t_v *v, int y, int x, long double degree, long double i, i
 
 void	ft_draw_line_circle(t_v *v, int y, int x)
 {
-	
+
 	long double degree = 0;
 	int right = degree + 30;
 	long double left = degree - 30;
 	long double i = 0.0;
 	int index = 0;
 	
-	int tab[360];
+	double tab[320];
 	if (left < 0)
 		left = 360 + left;
 	if (right > 360)
 		right = right - 360;
-	while(index <= 360)
+	while(index <= 320)
 	{
 		ft_draw_line_dir(v, y, x, left,  i, &tab[index]);
-		printf("tab[%d] : %d\n", index, tab[index]);
-		i = i + 0.16666666666;
+		printf("tab[%d] : %f\n", index, tab[index]);
+		i = i + 0.1875;
 		index++;
 		if ((left + i) > 360)
 			left = -30;
 	}
 	int z = 0;
 	index = 0;
-	while(index <= 360)
+	while(index <= 320)
 	{
-		tab[index] = ((v->m.y * XSIZE) - (2 * XSIZE) - tab[index]);
-		printf(" v->m.y %d, tab[index] %d, z %d\n", v->m.y * XSIZE, tab[index], z);
+		printf("TEST\n");
+		printf("tab[index]: %f\n", tab[index]);
+		printf("(double)(64 / tab[index] * 277) %f\n",  (double)(64 / tab[index] * 277));
+		printf("END\n");
+		tab[index] = ((double)(64 / tab[index] * 277));
 		while(z <= tab[index])
 		{
-			printf("int %d\n", ((v->m.y * XSIZE / 2) - (tab[index] / 2) + z));
 			ft_my_mlx_pixel_put(&v->ig, ((v->m.y * XSIZE / 2) - (tab[index] / 2) + z) , (index + 100), \
 			ft_rgb_to_int(0, 255, 0, 255));
 			z++;
