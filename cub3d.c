@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:46:25 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/22 14:21:30 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/22 20:43:16 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -388,7 +388,7 @@ void	ft_draw_player_dir(t_v *v, int degree, int dir)
 	double resultx = find_end_x(degree);
 	double resulty = find_end_y(degree);
 	double pixelx = v->m.ppx + (XSIZE / 2);
-	double pixely = v->m.ppy + (XSIZE / 2);
+	double pixely = v->m.ppx + (XSIZE / 2);
 	int pixels = sqrt((resultx * resultx) + (resulty * resulty));
 	resultx /= pixels;
 	resulty /= pixels;
@@ -608,7 +608,7 @@ void	ft_init_mlx(t_v *var)
 	// if (!var->mlx2)
 	// 	return (exit(1));
 	// ft_printf("var->m.y=%d et var->m.x=%d\n", var->m.y, var->m.x);
-	var->win = mlx_new_window(var->mlx, ((var->m.x) * XSIZE) + (320 * 2), (var->m.y * XSIZE), "cub3D");
+	var->win = mlx_new_window(var->mlx, ((var->m.x) * XSIZE) + (320 * 3), (var->m.y * XSIZE), "cub3D");
 	if (!var->win)
 		return (mlx_destroy_display(var->mlx), free(var->mlx), exit(1));
 	var->ig.img = mlx_new_image(var->mlx, ((var->m.x) * XSIZE), (var->m.y * XSIZE));
@@ -632,7 +632,7 @@ void	ft_init_mlx(t_v *var)
 	ft_check_map(var);
 	ft_draw_line_circle3d(var, var->m.ppy, var->m.ppx);
 	mlx_put_image_to_window(var->mlx, var->win, var->ig.img, 0, 0);
-	mlx_put_image_to_window(var->mlx, var->win, var->ig2.img, ((var->m.x) * XSIZE), (((var->m.y) * XSIZE) / 2));
+	mlx_put_image_to_window(var->mlx, var->win, var->ig2.img, ((var->m.x) * XSIZE + 10), (((var->m.y) * XSIZE) / 2));
 	mlx_loop(var->mlx);
 	// mlx_loop(var->mlx2);
 }
