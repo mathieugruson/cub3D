@@ -6,45 +6,11 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:46:25 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/20 15:37:48 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/22 14:21:30 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-typedef struct s_data {
-	void	*img;
-	char	*ad;
-	int		pos;
-	int		addr_use;
-	int		bpp;
-	int		llen;
-	int		en;
-	int		x;
-	int		y;
-	int		color1;
-	int		color2;
-	int		color3;
-}	t_data;
-
-typedef struct s_map
-{
-	char	**map;
-	int		x;
-	int		y;
-	int		px;
-	int		py;
-}	t_map;
-
-typedef struct s_var
-{
-	void	*mlx;
-	void	*win;
-	t_data	ig;
-	t_map	m;
-}	t_v;
-
-#define XSIZE 64
 
 void	ft_my_mlx_pixel_put(t_data *data, int i, int j, int color)
 {
@@ -80,17 +46,6 @@ int	ft_close_event(t_v *v)
 	exit(0);
 }
 
-int	ft_keypress_event(int key, t_v *v)
-{
-	// if (key == 65362 || key == 119)
-	// if (key == 65364 || key == 115)
-	// if (key == 65363 || key == 100)
-	// if (key == 65361 || key == 97)
-	if (key == 65307)
-		ft_close_event(v);
-	return (0);
-}
-
 void	ft_init_data(t_v *var)
 {
 	var->mlx = 0;
@@ -101,6 +56,11 @@ void	ft_init_data(t_v *var)
 	var->ig.llen = 0;
 	var->ig.en = 0;
 	var->ig.ad = 0;
+	var->m.degree = 0;
+	var->m.degree_status = 0;
+	var->m.resultx = 0;
+	var->m.resulty = 0;
+	var->m.dir = 2;
 }
 
 void	ft_stop_all(t_v *v, int exint)
@@ -158,108 +118,224 @@ void	ft_draw_line_map(t_v *v)
 	}
 }
 
-long double find_end_x(double degree)
+double find_end_x(double degree)
 {
 	// degree to gradian : 350° × π/180 = 6,109rad
 	/* entre 0 et 180 on renvoie +x et entre 180 et 360 on renvoie -x*/
-	long double pi = 3.1415926535897932384626433832;
-	long double res = 0;
+	double pi = 3.1415926535897932384626433832;
+	double res = 0;
 
-	res = 360 * csinl((degree) * pi / 180);
-	// printf("resx : %Lf\n", res);
+	res = 10 * sin((degree) * pi / 180);
+	// printf("resx : %f\n", res);
 	return (res);
 }
 
-long double find_end_y(double degree)
+double find_end_y(double degree)
 {
-	long double pi = 3.1415926535897932384626433832;
-	long double res = 0;
-	res = 360 * ccosl((degree) * pi / 180); //
+	double pi = 3.1415926535897932384626433832;
+	double res = 0;
+	res = 10 * cos((degree) * pi / 180);
+	// printf("resy : %f\n", res);
 	return (res * -1);
 }
 
-void ft_draw_line_dir(t_v *v, int y, int x, long double degree, long double i, double *tab)
+void	ft_draw_line_dir(t_v *v, int y, int x, int degree)
 {
 	(void)y;
-	long double pi = 3.1415926535897932384626433832;
 	// int degree = 270;
-	long double resultx = find_end_x(degree + i); //arrondi
-	long double resulty = find_end_y(degree + i); //arrondi
-	// printf("resultx : %Lf et resulty : %Lf\n", resultx, resulty);
-	long double endx = ((x * XSIZE) + resultx);
-	long double endy = ((y * XSIZE) + resulty); // + pca on renvoie - ou + indifferement
-	// printf("endx : %Lf et endy : %Lf\n", endx, endy);
-	long double deltax = endx - (x * XSIZE) ;
-	long double deltay = endy - (y * XSIZE);
-	long double pixelx = (x * XSIZE) + (XSIZE / 2);
-	long double pixely = (y * XSIZE) + (XSIZE / 2);
-	// printf("endx=%Lf, endy=%Lf, deltax=%Lf, deltay=%Lf, pixelx=%Lf et pixely=%Lf\n", endx, endy, deltax, deltay, pixelx, pixely);
+	double resultx = find_end_x(degree);
+	double resulty = find_end_y(degree);
+	// printf("resultx : %f et resulty : %f\n", resultx, resulty);
+	double endx = ((x * XSIZE) + resultx);
+	double endy = ((y * XSIZE) + resulty); // + pca on renvoie - ou + indifferement
+	double deltax = endx - (x * XSIZE) ;
+	double deltay = endy - (y * XSIZE);
+	double pixelx = (x * XSIZE) + (XSIZE / 2);
+	double pixely = (y * XSIZE) + (XSIZE / 2);
+	// printf("endx=%f, endy=%f, deltax=%f, deltay=%f, pixelx=%f et pixely=%f\n", endx, endy, deltax, deltay, pixelx, pixely);
 	// exit(0);
 	int pixels = sqrt((deltax * deltax) + (deltay * deltay));
 	deltax /= pixels;
 	deltay /= pixels;
-	// printf("degree %Lf, i %Lf, (degree + i) %Lf\n", degree, i, (degree + i));
-	long double view = 30 - i; ;
-	if (view < 0)
-		view *= -1;
 	while (1)
 	{
-		if (v->m.map[(int)pixely / XSIZE][(int)pixelx / XSIZE] == '1')
-		{
-			*tab = ((y * XSIZE) - pixely) * csinl((90) * pi / 180) / csinl((180 - 90 - (view)) * pi / 180);				
-			// il faut peut etre stocker pixely du centre. comment faire ? lancer un rayon a angle 0 et le garder
-			*tab = *tab * ccosl((view) * pi / 180);
-			// printf("*tab %d\n", *tab);
-			return ;
-		}
+		if (v->m.map[((int)pixely) / XSIZE][(int)pixelx / XSIZE] == '1' || v->m.map[(int)pixely / XSIZE][((int)pixelx) / XSIZE] == '1')
+			break ;
 		ft_my_mlx_pixel_put(&v->ig, pixely, pixelx, ft_rgb_to_int(0, 50, 150, 250));
 		pixelx += deltax;
 		pixely += deltay;
 	}
 }
 
-void	ft_draw_line_circle(t_v *v, int y, int x)
+void	ft_new_player_pos(t_v *v, double y, double x, int degree)
 {
+	double resultx = find_end_x(degree);
+	double resulty = find_end_y(degree);
+	double pixelx = x + (XSIZE / 2);
+	double pixely = y + (XSIZE / 2);
+	int pixels = sqrt((resultx * resultx) + (resulty * resulty));
+	int i = 0;
+	resultx /= pixels;
+	resulty /= pixels;
+	while (i < 10)
+	{
+		if (v->m.map[((int)pixely) / XSIZE][(int)pixelx / XSIZE] == '1' || v->m.map[(int)pixely / XSIZE][((int)pixelx) / XSIZE] == '1')
+			break ;
+		// ft_my_mlx_pixel_put(&v->ig, pixely, pixelx, ft_rgb_to_int(0, 50, 150, 250));
+		pixelx += resultx;
+		pixely += resulty;
+		i++;
+	}
+	v->m.ppx = pixelx - (XSIZE / 2);
+	v->m.ppy = pixely - (XSIZE / 2);
+}
 
-	long double degree = 0;
-	int right = degree + 30;
-	long double left = degree - 30;
-	long double i = 0.0;
-	int index = 0;
+void	ft_draw_pix_line_dir(t_v *v, double y, double x, int degree)
+{
+	if (v->m.degree_status != v->m.degree)
+	{
+		v->m.degree_status = v->m.degree;
+		v->m.resultx = find_end_x(degree);
+		v->m.resulty = find_end_y(degree);
+	}
+	v->m.pixels = sqrt((v->m.resultx * v->m.resultx) + (v->m.resulty * v->m.resulty));
+	v->m.pixelx = x + (XSIZE / 2);
+	v->m.pixely = y + (XSIZE / 2);
+	v->m.resultx2 = v->m.resultx / v->m.pixels;
+	v->m.resulty2  = v->m.resulty / v->m.pixels;
+	while (1)
+	{
+		if (v->m.map[((int)v->m.pixely) / XSIZE][(int)v->m.pixelx / XSIZE] == '1' || v->m.map[(int)v->m.pixely / XSIZE][((int)v->m.pixelx) / XSIZE] == '1')
+			break ;
+		ft_my_mlx_pixel_put(&v->ig, v->m.pixely, v->m.pixelx, ft_rgb_to_int(0, 50, 150, 250));
+		v->m.pixelx += v->m.resultx2;
+		v->m.pixely += v->m.resulty2;
+	}
+}
+
+void	ft_draw_pix_ray_dir(t_v *v, double y, double x, int degree)
+{
+	double resultx = find_end_x(degree);
+	double resulty = find_end_y(degree);
+	double pixelx = x + (XSIZE / 2);
+	double pixely = y + (XSIZE / 2);
+	int pixels = sqrt((resultx * resultx) + (resulty * resulty));
 	
-	double tab[320];
+	resultx /= pixels;
+	resulty /= pixels;
+	while (1)
+	{
+		if (v->m.map[((int)pixely) / XSIZE][(int)pixelx / XSIZE] == '1' || v->m.map[(int)pixely / XSIZE][((int)pixelx) / XSIZE] == '1')
+			break ;
+		ft_my_mlx_pixel_put(&v->ig, pixely, pixelx, ft_rgb_to_int(0, 50, 150, 250));
+		pixelx += resultx;
+		pixely += resulty;
+	}
+}
+
+
+void	ft_draw_line_angle_right(t_v *v, int y, int x, int degree)
+{
+	(void)y;
+	// int degree = 270;
+	double resultx = find_end_x(degree);
+	double resulty = find_end_y(degree);
+	// printf("resultx : %f et resulty : %f\n", resultx, resulty);
+	double endx = ((x * XSIZE) + resultx);
+	double endy = ((y * XSIZE) + resulty); // + pca on renvoie - ou + indifferement
+	double deltax = endx - (x * XSIZE) ;
+	double deltay = endy - (y * XSIZE);
+	double pixelx = (x * XSIZE) + (XSIZE / 2);
+	double pixely = (y * XSIZE) + (XSIZE / 2);
+	// printf("endx=%f, endy=%f, deltax=%f, deltay=%f, pixelx=%f et pixely=%f\n", endx, endy, deltax, deltay, pixelx, pixely);
+	// exit(0);
+	int pixels = sqrt((deltax * deltax) + (deltay * deltay));
+	deltax /= pixels;
+	deltay /= pixels;
+	while (1)
+	{
+		if (v->m.map[((int)pixely) / XSIZE][(int)pixelx / XSIZE] == '1' || v->m.map[(int)pixely / XSIZE][((int)pixelx) / XSIZE] == '1')
+			break ;
+		ft_my_mlx_pixel_put(&v->ig, pixely, pixelx, ft_rgb_to_int(0, 50, 150, 250));
+		pixelx += deltax;
+		pixely += deltay;
+		// ft_printf("pixelx=%d et pixely=%d et deltax=%d et deltay=%d\n", pixelx, pixely, deltax, deltay);
+		// --pixels;
+	}
+}
+
+void	ft_draw_line_angle_left(t_v *v, int y, int x, int degree)
+{
+	(void)y;
+	// int degree = 270;
+	double resultx = find_end_x(degree);
+	double resulty = find_end_y(degree);
+	double endx = ((x * XSIZE) + resultx);
+	double endy = ((y * XSIZE) + resulty); // + pca on renvoie - ou + indifferement
+	double deltax = endx - (x * XSIZE) ;
+	double deltay = endy - (y * XSIZE);
+	double pixelx = (x * XSIZE) + (XSIZE / 2);
+	double pixely = (y * XSIZE) + (XSIZE / 2);
+	// printf("endx=%f, endy=%f, deltax=%f, deltay=%f, pixelx=%f et pixely=%f\n", endx, endy, deltax, deltay, pixelx, pixely);
+	// exit(0);
+	int pixels = sqrt((deltax * deltax) + (deltay * deltay));
+	deltax /= pixels;
+	deltay /= pixels;
+	while (1)
+	{
+		if (v->m.map[((int)pixely) / XSIZE][(int)pixelx / XSIZE] == '1' || v->m.map[(int)pixely / XSIZE][((int)pixelx) / XSIZE] == '1')
+			break ;
+		ft_my_mlx_pixel_put(&v->ig, pixely, pixelx, ft_rgb_to_int(0, 50, 150, 250));
+		pixelx += deltax;
+		pixely += deltay;
+		// --pixels;
+	}
+}
+
+void	ft_draw_pix_line_circle(t_v *v, double y, double x)
+{
+	int right = v->m.degree + 30;
+	int left = v->m.degree - 30;
+	int mid2 = v->m.degree + 90;
+	int mid1 = v->m.degree - 90;
+
 	if (left < 0)
 		left = 360 + left;
 	if (right > 360)
 		right = right - 360;
-	while(index <= 320)
-	{
-		ft_draw_line_dir(v, y, x, left,  i, &tab[index]);
-		printf("tab[%d] : %f\n", index, tab[index]);
-		i = i + 0.1875;
-		index++;
-		if ((left + i) > 360)
-			left = -30;
-	}
-	int z = 0;
-	index = 0;
-	while(index <= 320)
-	{
-		printf("TEST\n");
-		printf("tab[index]: %f\n", tab[index]);
-		printf("(double)(64 / tab[index] * 277) %f\n",  (double)(64 / tab[index] * 277));
-		printf("END\n");
-		tab[index] = ((double)(64 / tab[index] * 277));
-		while(z <= tab[index])
-		{
-			ft_my_mlx_pixel_put(&v->ig, ((v->m.y * XSIZE / 2) - (tab[index] / 2) + z) , (index + 100), \
-			ft_rgb_to_int(0, 255, 0, 255));
-			z++;
-		}
-		// break ;
-		z = 0;
-		index++;
-	}	
+	if (mid1 < 0)
+		mid1 = 360 + mid1;
+	if (mid2 > 360)
+		mid2 = mid2 - 360;
+	ft_draw_pix_line_dir(v, y, x, v->m.degree);
+	ft_draw_pix_ray_dir(v, y, x, right);
+	ft_draw_pix_ray_dir(v, y, x, left);
+	ft_draw_pix_ray_dir(v, y, x, mid1); //
+	ft_draw_pix_ray_dir(v, y, x, mid2); //
+}
+
+void	ft_draw_line_circle(t_v *v, int y, int x)
+{
+	// int degree = 350;
+	int right = v->m.degree + 30;
+	int left = v->m.degree - 30;
+	int mid2 = v->m.degree + 90;
+	int mid1 = v->m.degree - 90;
+
+	if (left < 0)
+		left = 360 + left;
+	if (right > 360)
+		right = right - 360;
+	if (mid1 < 0)
+		mid1 = 360 + mid1;
+	if (mid2 > 360)
+		mid2 = mid2 - 360;
+	// printf("v->m.degree %i, right %i, left %i\n", v->m.degree, right, left);
+	ft_draw_line_dir(v, y, x, v->m.degree);
+	ft_draw_line_angle_right(v, y, x, right);
+	ft_draw_line_angle_left(v, y, x, left);
+	ft_draw_pix_ray_dir(v, y, x, mid1);
+	ft_draw_pix_ray_dir(v, y, x, mid2);
 }
 
 void	ft_paint_map(t_v *v, int y, int x)
@@ -282,6 +358,83 @@ void	ft_paint_map(t_v *v, int y, int x)
 		}
 		i++;
 	}
+}
+
+void	ft_reset_paint(t_v *v, int y, int x)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < XSIZE)
+	{
+		j = 0;
+		while (j < XSIZE)
+		{
+			if (j != 0)
+			{
+				ft_my_mlx_pixel_put(&v->ig, (y * XSIZE) + i, (x * XSIZE) + j, \
+				ft_rgb_to_int(0, 255, 255, 255));
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
+void	ft_draw_player_dir(t_v *v, int degree, int dir)
+{
+	(void)dir;
+	double resultx = find_end_x(degree);
+	double resulty = find_end_y(degree);
+	double pixelx = v->m.ppx + (XSIZE / 2);
+	double pixely = v->m.ppy + (XSIZE / 2);
+	int pixels = sqrt((resultx * resultx) + (resulty * resulty));
+	resultx /= pixels;
+	resulty /= pixels;
+	int i = 0;
+	while (1)
+	{
+		if (v->m.map[((int)pixely) / XSIZE][(int)pixelx / XSIZE] == '1' || v->m.map[(int)pixely / XSIZE][((int)pixelx) / XSIZE] == '1')
+			break ;
+		ft_my_mlx_pixel_put(&v->ig, pixely, pixelx, ft_rgb_to_int(0, 250, 250, 250));
+		pixelx += resultx;
+		pixely += resulty;
+		if (i == (XSIZE / 10))
+			break;
+		i++;
+	}
+	// if (dir == 'U')
+	// {
+	// 	v->m.ppxux = pixelx - (XSIZE / 2);
+	// 	v->m.ppyuy = pixely - (XSIZE / 2);
+	// }
+	// if (dir == 'R')
+	// {
+	// 	v->m.ppxrx = pixelx - (XSIZE / 2);
+	// 	v->m.ppyry = pixely - (XSIZE / 2);
+	// }
+	// if (dir == 'L')
+	// {
+	// 	v->m.ppxlx = pixelx - (XSIZE / 2);
+	// 	v->m.ppyly = pixely - (XSIZE / 2);
+	// }
+}
+
+void	ft_paint_player_pixel(t_v *v, int y, int x)
+{
+	(void)y;
+	(void)x;
+	int right = v->m.degree + 90;
+	int left = v->m.degree - 90;
+
+	if (right > 360)
+		right = right - 360;
+	if (left < 0)
+		left = 360 + left;
+	ft_draw_player_dir(v, v->m.degree, 'U');
+	ft_draw_player_dir(v, right, 'R');
+	ft_draw_player_dir(v, left, 'L');
 }
 
 void	ft_paint_player(t_v *v, int y, int x)
@@ -325,6 +478,60 @@ void	ft_paint_player(t_v *v, int y, int x)
 	}
 }
 
+void	ft_init_map_value(t_v *v)
+{
+	int i;
+	int j;
+
+	i = 0;
+	if (!v->m.map)
+		return ;
+	while (v->m.map[i])
+	{
+		j = 0;
+		while (v->m.map[i][j])
+		{
+			if (v->m.map[i][j] == 'P')
+			{
+				v->m.py = i;
+				v->m.px = j;
+				v->m.ppy = (i * XSIZE);
+				v->m.ppx = (j * XSIZE);
+				v->m.resultx = find_end_x(0);
+				v->m.resulty = find_end_y(0);
+				v->m.pixelx = v->m.ppx + (XSIZE / 2);
+				v->m.pixely = v->m.ppy + (XSIZE / 2);
+				v->m.pixels = sqrt((v->m.resultx * v->m.resultx) + (v->m.resulty * v->m.resulty));
+				v->m.resultx /= v->m.pixels;
+				v->m.resulty  /= v->m.pixels;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
+void	ft_check_pix_map(t_v *v)
+{
+	int i;
+	int j;
+
+	i = 0;
+	if (!v->m.map)
+		return ;
+	while (v->m.map[i])
+	{
+		j = 0;
+		while (v->m.map[i][j])
+		{
+			if (v->m.map[i][j] == '1')
+				ft_paint_map(v, i, j);
+			j++;
+		}
+		i++;
+	}
+}
+
 void	ft_check_map(t_v *v)
 {
 	int i;
@@ -333,54 +540,23 @@ void	ft_check_map(t_v *v)
 	i = 0;
 	if (!v->m.map)
 		return ;
-	// ft_paint_map(v, 2, 2);
 	while (v->m.map[i])
 	{
 		j = 0;
 		while (v->m.map[i][j])
 		{
-			// ft_printf("v->m.map[%d][%d]=%c\n", i, j, v->m.map[i][j]);
 			if (v->m.map[i][j] == '1')
 				ft_paint_map(v, i, j);
 			if (v->m.map[i][j] == 'P')
 			{
-				ft_draw_line_circle(v, i, j);
-				ft_paint_player(v, i, j);
-				// ft_draw_line_angle_right(v, i, j);
-				// ft_draw_line_angle_left(v, i, j);
-				
+				ft_draw_pix_line_circle(v, v->m.ppy, v->m.ppx);
+				ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
 			}
 			j++;
 		}
-		ft_printf("\n");
 		i++;
 	}
 }
-
-// void	ft_draw_ratio(t_v *v, t_data sprite, int y, int x)
-// {
-// 	long double		i;
-// 	long double		j;
-// 	int			color;
-// 	long double		ratio;
-
-// 	j = 0;
-// 	ratio = ((long double)sprite.w / (long double)(((v->m.y) * v->m.x)));
-// 	y = y - (((v->m.y) * v->m.x) / 2);
-// 	x = x - (((v->m.y) * v->m.x) / 2);
-// 	while (j < (long double)((v->m.y) * v->m.x))
-// 	{
-// 		i = 0;
-// 		while (i < (long double)((v->m.y) * v->m.x))
-// 		{
-// 			color = ft_get_color(&sprite, i * ratio, j * ratio);
-// 			if (color != 0x000000FF)
-// 				ft_my_mlx_pixel_put(&v->ig, (y + i), (x + j), color);
-// 			i++;
-// 		}
-// 		j++;
-// 	}
-// }
 
 void	ft_init_map(t_v *var)
 {
@@ -418,7 +594,7 @@ void	ft_init_map(t_v *var)
 		// ft_printf("var->m.map[i]=%s", var->m.map[i]);
 		i++;
 	}
-	ft_printf("\n");
+	// ft_printf("\n");
 	var->m.y = i; // H
 	var->m.x = ft_strlen(var->m.map[0]) - 1; // W
 }
@@ -428,20 +604,37 @@ void	ft_init_mlx(t_v *var)
 	var->mlx = mlx_init();
 	if (!var->mlx)
 		return (exit(1));
-	ft_printf("var->m.y=%d et var->m.x=%d\n", var->m.y, var->m.x);
-	var->win = mlx_new_window(var->mlx, ((var->m.x) * XSIZE), (var->m.y * XSIZE), "cub3D");
+	// var->mlx2 = mlx_init();
+	// if (!var->mlx2)
+	// 	return (exit(1));
+	// ft_printf("var->m.y=%d et var->m.x=%d\n", var->m.y, var->m.x);
+	var->win = mlx_new_window(var->mlx, ((var->m.x) * XSIZE) + (320 * 2), (var->m.y * XSIZE), "cub3D");
 	if (!var->win)
 		return (mlx_destroy_display(var->mlx), free(var->mlx), exit(1));
 	var->ig.img = mlx_new_image(var->mlx, ((var->m.x) * XSIZE), (var->m.y * XSIZE));
 	if (!var->ig.img)
 		ft_stop_all(var, 1);
 	var->ig.ad = mlx_get_data_addr(var->ig.img, &var->ig.bpp, &var->ig.llen, &var->ig.en);
+
+	// var->win2 = mlx_new_window(var->mlx2, 1320, 1200, "cub3D");
+	// if (!var->win2)
+	// 	return (mlx_destroy_display(var->mlx2), free(var->mlx2), exit(1));
+	var->ig2.img = mlx_new_image(var->mlx, 320, 200);
+	if (!var->ig2.img)
+		ft_stop_all(var, 1);
+	var->ig2.ad = mlx_get_data_addr(var->ig2.img, &var->ig2.bpp, &var->ig2.llen, &var->ig2.en);
 	mlx_hook(var->win, 2, 1L << 0, ft_keypress_event, var);
 	mlx_hook(var->win, 17, 1L << 17, ft_close_event, var);
+	// mlx_hook(var->win2, 2, 1L << 0, ft_keypress_event, var);
+	// mlx_hook(var->win2, 17, 1L << 17, ft_close_event, var);
+	ft_init_map_value(var);
 	ft_draw_line_map(var);
 	ft_check_map(var);
+	ft_draw_line_circle3d(var, var->m.ppy, var->m.ppx);
 	mlx_put_image_to_window(var->mlx, var->win, var->ig.img, 0, 0);
+	mlx_put_image_to_window(var->mlx, var->win, var->ig2.img, ((var->m.x) * XSIZE), (((var->m.y) * XSIZE) / 2));
 	mlx_loop(var->mlx);
+	// mlx_loop(var->mlx2);
 }
 
 int	main(void)

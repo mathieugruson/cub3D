@@ -6,7 +6,7 @@
 #    By: chillion <chillion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/01 12:07:22 by chillion          #+#    #+#              #
-#    Updated: 2023/01/16 11:37:22 by chillion         ###   ########.fr        #
+#    Updated: 2023/01/20 16:12:07 by chillion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,8 @@ CYAN = \033[0;36m
 NC = \033[0m
 
 SRCS =	cub3d.c \
+		moove.c \
+		display3d.c \
 
 LIBFT := libs/libft/libft.a
 MLX := libs/minilibx-linux/libmlx_Linux.a
