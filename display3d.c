@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 16:10:11 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/23 16:26:37 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/23 16:28:27 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,41 +15,41 @@
 void	find_dir(t_v *v, double pixely, double pixelx, char *dir)
 {
 	static int i = 0;
-	printf("%i\n", (i % 319));
-	printf("((int)pixely modulo XSIZE) : %i\n", ((int)pixely % XSIZE));
-	printf("((int)pixelx moduo XSIZE) : %i\n", ((int)pixelx % XSIZE));
-	printf("result N %c\n", v->m.map[((int)pixely + 10) / XSIZE][(int)pixelx / XSIZE]);
-	printf("result O %c\n", v->m.map[((int)pixely) / XSIZE][((int)pixelx + 10) / XSIZE]);
-	printf("result E %c\n", v->m.map[(int)pixely / XSIZE][((int)pixelx - 10) / XSIZE]);
-	printf("result S %c\n", v->m.map[((int)pixely - 10) / XSIZE][(int)pixelx / XSIZE]);
+	// printf("%i\n", (i % 319));
+	// printf("((int)pixely modulo XSIZE) : %i\n", ((int)pixely % XSIZE));
+	// printf("((int)pixelx moduo XSIZE) : %i\n", ((int)pixelx % XSIZE));
+	// printf("result N %c\n", v->m.map[((int)pixely + 10) / XSIZE][(int)pixelx / XSIZE]);
+	// printf("result O %c\n", v->m.map[((int)pixely) / XSIZE][((int)pixelx + 10) / XSIZE]);
+	// printf("result E %c\n", v->m.map[(int)pixely / XSIZE][((int)pixelx - 10) / XSIZE]);
+	// printf("result S %c\n", v->m.map[((int)pixely - 10) / XSIZE][(int)pixelx / XSIZE]);
 	i++;
 	if (v->m.map[((int)pixely + 10) / XSIZE][(int)pixelx / XSIZE] == '0' && ((int)pixely % XSIZE == 63 || (int)pixely % XSIZE == 0 || (int)pixely % XSIZE == 62 || (int)pixely % XSIZE == 1))
 	{
-		printf("result N %c\n", v->m.map[((int)pixely + 10) / XSIZE][(int)pixelx / XSIZE]);
+		// printf("result N %c\n", v->m.map[((int)pixely + 10) / XSIZE][(int)pixelx / XSIZE]);
 		*dir = 'N'; // OK
 	}
 	if (v->m.map[(int)pixely / XSIZE][((int)pixelx + 10) / XSIZE] == '0'&& ((int)pixelx % XSIZE == 63 || (int)pixelx % XSIZE == 0 || (int)pixelx % XSIZE == 62 || (int)pixelx % XSIZE == 1))
 	{
-		printf("result O %c\n", v->m.map[(int)pixely / XSIZE][((int)pixelx + 10) / XSIZE]);
+		// printf("result O %c\n", v->m.map[(int)pixely / XSIZE][((int)pixelx + 10) / XSIZE]);
 		*dir = 'O';
 	}
 	if (v->m.map[(int)pixely / XSIZE][((int)pixelx - 10) / XSIZE] == '0'&& ((int)pixelx % XSIZE == 63 || (int)pixelx % XSIZE == 0 || (int)pixelx % XSIZE == 62 || (int)pixelx % XSIZE == 1))
 	{
-		printf("result E %c\n", v->m.map[(int)pixely / XSIZE][((int)pixelx - 10) / XSIZE]);
+		// printf("result E %c\n", v->m.map[(int)pixely / XSIZE][((int)pixelx - 10) / XSIZE]);
 		*dir = 'E';
 	}
 	if (v->m.map[((int)pixely - 10) / XSIZE][(int)pixelx / XSIZE] == '0' && ((int)pixely % XSIZE == 63 || (int)pixely % XSIZE == 0 || (int)pixely % XSIZE == 62 || (int)pixely % XSIZE == 1))
 	{
-		printf("result S %c\n", v->m.map[((int)pixely - 10) / XSIZE][(int)pixelx / XSIZE]);
+		// printf("result S %c\n", v->m.map[((int)pixely - 10) / XSIZE][(int)pixelx / XSIZE]);
 		*dir = 'S'; 
 	}
-	printf("*dir : %c\n", *dir);
+	// printf("*dir : %c\n", *dir);
 	if (!*dir && (i % 319) > 1 && (i % 319) < 319 && (*dir != *(dir - 1) && *dir != *(dir + 1)))
 		*dir = *(dir - 1);
-	printf("strange : %i\n", *dir);
+	// printf("strange : %i\n", *dir);
 	if (*dir != 0 && (*dir < 64 || *dir > 90))
 		*dir = *(dir - 1);
-	printf("strange after : %i\n", *dir);
+	// printf("strange after : %i\n", *dir);
 }
 
 void ft_draw_line_dir3d(t_v *v, int y, int x, double degree, double i, double *tab, char *dir)
