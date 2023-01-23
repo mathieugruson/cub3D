@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 16:01:48 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/22 14:21:40 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/23 12:02:02 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,14 +98,14 @@ void	ft_moove_display(t_v *v)
 int	ft_moove_player(t_v *v, int degree)
 {
 	double tmp_ppx = v->m.ppx + find_wall_x(v->m.degree + degree);
-	tmp_ppx = ((tmp_ppx + (XSIZE / 2)) / XSIZE);
+	tmp_ppx = (tmp_ppx / XSIZE);
 	double tmp_ppy = v->m.ppy + find_wall_y(v->m.degree + degree);
-	tmp_ppy = ((tmp_ppy + (XSIZE / 2)) / XSIZE);
+	tmp_ppy = (tmp_ppy / XSIZE);
 	if (v->m.map[(int)tmp_ppy][(int)tmp_ppx] == '1')
 		return (0);
 	ft_new_player_pos(v, v->m.ppy, v->m.ppx, v->m.degree + degree);
 	ft_moove_display(v);
-	v->m.py = (((v->m.ppy + (XSIZE / 2)) / XSIZE));
+	v->m.py = (v->m.ppy / XSIZE);
 	return (1);
 }
 

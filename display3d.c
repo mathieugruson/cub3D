@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 16:10:11 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/22 21:39:32 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/23 11:53:26 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@ void ft_draw_line_dir3d(t_v *v, int y, int x, double degree, double i, double *t
 	double view = 30 - i; ;
 	if (view < 0)
 		view *= -1;
-	// printf("view = %f\n", view);
-	// printf("degree : %f, i : %f degree + i : %f\n", degree, i, (degree + i));
+	printf("view = %f\n", view);
+	printf("degree : %f, i : %f degree + i : %f\n", degree, i, (degree + i));
 	double pi = 3.1415926535897932384626433832;
 	double resultx = find_end_x(degree + i); //arrondi
 	double resulty = find_end_y(degree + i); //arrondi
-	// printf("y %i, x %i\n", y, x);
-	// printf("resutly %f, resultx %f\n", resulty, resultx);
-	double pixelx = x /*+ (XSIZE / 2) ATTENTION : qd j enleve ca ca marche voir avec cyril */;
-	double pixely = y /*+ (XSIZE / 2) ATTENTION : qd j enleve ca ca marche voir avec cyril */;
-	// printf("pixely %f, pixelx %f\n", pixely, pixelx);
+	printf("y %i, x %i\n", y, x);
+	printf("resutly %f, resultx %f\n", resulty, resultx);
+	double pixelx = x; //ATTENTION : qd j enleve ca ca marche voir avec cyril */;
+	double pixely = y; //ATTENTION : qd j enleve ca ca marche voir avec cyril */;
+	printf("pixely %f, pixelx %f\n", pixely, pixelx);
 	int pixels = sqrt((resultx * resultx) + (resulty * resulty));
 	resultx /= pixels;
 	resulty /= pixels;

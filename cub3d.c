@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:46:25 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/22 20:43:16 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/23 12:02:29 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,8 +171,8 @@ void	ft_new_player_pos(t_v *v, double y, double x, int degree)
 {
 	double resultx = find_end_x(degree);
 	double resulty = find_end_y(degree);
-	double pixelx = x + (XSIZE / 2);
-	double pixely = y + (XSIZE / 2);
+	double pixelx = x;
+	double pixely = y;
 	int pixels = sqrt((resultx * resultx) + (resulty * resulty));
 	int i = 0;
 	resultx /= pixels;
@@ -186,8 +186,8 @@ void	ft_new_player_pos(t_v *v, double y, double x, int degree)
 		pixely += resulty;
 		i++;
 	}
-	v->m.ppx = pixelx - (XSIZE / 2);
-	v->m.ppy = pixely - (XSIZE / 2);
+	v->m.ppx = pixelx;
+	v->m.ppy = pixely;
 }
 
 void	ft_draw_pix_line_dir(t_v *v, double y, double x, int degree)
@@ -199,8 +199,8 @@ void	ft_draw_pix_line_dir(t_v *v, double y, double x, int degree)
 		v->m.resulty = find_end_y(degree);
 	}
 	v->m.pixels = sqrt((v->m.resultx * v->m.resultx) + (v->m.resulty * v->m.resulty));
-	v->m.pixelx = x + (XSIZE / 2);
-	v->m.pixely = y + (XSIZE / 2);
+	v->m.pixelx = x;
+	v->m.pixely = y;
 	v->m.resultx2 = v->m.resultx / v->m.pixels;
 	v->m.resulty2  = v->m.resulty / v->m.pixels;
 	while (1)
@@ -217,8 +217,8 @@ void	ft_draw_pix_ray_dir(t_v *v, double y, double x, int degree)
 {
 	double resultx = find_end_x(degree);
 	double resulty = find_end_y(degree);
-	double pixelx = x + (XSIZE / 2);
-	double pixely = y + (XSIZE / 2);
+	double pixelx = x;
+	double pixely = y;
 	int pixels = sqrt((resultx * resultx) + (resulty * resulty));
 	
 	resultx /= pixels;
@@ -387,8 +387,8 @@ void	ft_draw_player_dir(t_v *v, int degree, int dir)
 	(void)dir;
 	double resultx = find_end_x(degree);
 	double resulty = find_end_y(degree);
-	double pixelx = v->m.ppx + (XSIZE / 2);
-	double pixely = v->m.ppx + (XSIZE / 2);
+	double pixelx = v->m.ppx;
+	double pixely = v->m.ppx;
 	int pixels = sqrt((resultx * resultx) + (resulty * resulty));
 	resultx /= pixels;
 	resulty /= pixels;
@@ -495,12 +495,12 @@ void	ft_init_map_value(t_v *v)
 			{
 				v->m.py = i;
 				v->m.px = j;
-				v->m.ppy = (i * XSIZE);
-				v->m.ppx = (j * XSIZE);
+				v->m.ppy = (i * XSIZE) + (XSIZE / 2);
+				v->m.ppx = (j * XSIZE) + (XSIZE / 2);
 				v->m.resultx = find_end_x(0);
 				v->m.resulty = find_end_y(0);
-				v->m.pixelx = v->m.ppx + (XSIZE / 2);
-				v->m.pixely = v->m.ppy + (XSIZE / 2);
+				v->m.pixelx = v->m.ppx;
+				v->m.pixely = v->m.ppy;
 				v->m.pixels = sqrt((v->m.resultx * v->m.resultx) + (v->m.resulty * v->m.resulty));
 				v->m.resultx /= v->m.pixels;
 				v->m.resulty  /= v->m.pixels;
