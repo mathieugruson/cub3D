@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 16:10:11 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/23 13:47:37 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/23 16:26:37 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,42 @@
 
 void	find_dir(t_v *v, double pixely, double pixelx, char *dir)
 {
-	if (v->m.map[((int)pixely + 10) / XSIZE][(int)pixelx / XSIZE] == '0')
+	static int i = 0;
+	printf("%i\n", (i % 319));
+	printf("((int)pixely modulo XSIZE) : %i\n", ((int)pixely % XSIZE));
+	printf("((int)pixelx moduo XSIZE) : %i\n", ((int)pixelx % XSIZE));
+	printf("result N %c\n", v->m.map[((int)pixely + 10) / XSIZE][(int)pixelx / XSIZE]);
+	printf("result O %c\n", v->m.map[((int)pixely) / XSIZE][((int)pixelx + 10) / XSIZE]);
+	printf("result E %c\n", v->m.map[(int)pixely / XSIZE][((int)pixelx - 10) / XSIZE]);
+	printf("result S %c\n", v->m.map[((int)pixely - 10) / XSIZE][(int)pixelx / XSIZE]);
+	i++;
+	if (v->m.map[((int)pixely + 10) / XSIZE][(int)pixelx / XSIZE] == '0' && ((int)pixely % XSIZE == 63 || (int)pixely % XSIZE == 0 || (int)pixely % XSIZE == 62 || (int)pixely % XSIZE == 1))
+	{
+		printf("result N %c\n", v->m.map[((int)pixely + 10) / XSIZE][(int)pixelx / XSIZE]);
 		*dir = 'N'; // OK
-	else if (v->m.map[((int)pixely - 10) / XSIZE][(int)pixelx / XSIZE] == '0')
-		*dir = 'S'; // OK
-	else if (v->m.map[(int)pixely / XSIZE][((int)pixelx + 10) / XSIZE] == '0')
+	}
+	if (v->m.map[(int)pixely / XSIZE][((int)pixelx + 10) / XSIZE] == '0'&& ((int)pixelx % XSIZE == 63 || (int)pixelx % XSIZE == 0 || (int)pixelx % XSIZE == 62 || (int)pixelx % XSIZE == 1))
+	{
+		printf("result O %c\n", v->m.map[(int)pixely / XSIZE][((int)pixelx + 10) / XSIZE]);
 		*dir = 'O';
-	else if (v->m.map[((int)pixely + 1) / XSIZE][((int)pixelx - 10) / XSIZE] == '0')
+	}
+	if (v->m.map[(int)pixely / XSIZE][((int)pixelx - 10) / XSIZE] == '0'&& ((int)pixelx % XSIZE == 63 || (int)pixelx % XSIZE == 0 || (int)pixelx % XSIZE == 62 || (int)pixelx % XSIZE == 1))
+	{
+		printf("result E %c\n", v->m.map[(int)pixely / XSIZE][((int)pixelx - 10) / XSIZE]);
 		*dir = 'E';
-	else
-		*dir = 'Z';
+	}
+	if (v->m.map[((int)pixely - 10) / XSIZE][(int)pixelx / XSIZE] == '0' && ((int)pixely % XSIZE == 63 || (int)pixely % XSIZE == 0 || (int)pixely % XSIZE == 62 || (int)pixely % XSIZE == 1))
+	{
+		printf("result S %c\n", v->m.map[((int)pixely - 10) / XSIZE][(int)pixelx / XSIZE]);
+		*dir = 'S'; 
+	}
+	printf("*dir : %c\n", *dir);
+	if (!*dir && (i % 319) > 1 && (i % 319) < 319 && (*dir != *(dir - 1) && *dir != *(dir + 1)))
+		*dir = *(dir - 1);
+	printf("strange : %i\n", *dir);
+	if (*dir != 0 && (*dir < 64 || *dir > 90))
+		*dir = *(dir - 1);
+	printf("strange after : %i\n", *dir);
 }
 
 void ft_draw_line_dir3d(t_v *v, int y, int x, double degree, double i, double *tab, char *dir)
@@ -51,7 +77,7 @@ void ft_draw_line_dir3d(t_v *v, int y, int x, double degree, double i, double *t
 		if (v->m.map[(int)pixely / XSIZE][(int)pixelx / XSIZE] == '1')
 		{
 			find_dir(v, pixely, pixelx, dir);
-			printf("dir : %c\n", *dir);
+			// printf("dir : %c\n", *dir);
 			// printf("y : %i, pixely : %f, x : %i, pixelx %f\n", y, pixely, x, pixelx);
 			double distx = ((double)x - pixelx);
 			if (distx < 0)
@@ -90,7 +116,7 @@ void	ft_draw_line_circle3d(t_v *v, int y, int x)
 	/* METRIC 1/2 */
 	// printf("degree : %i\n", v->m.degree);
 	/**/
-	while(index <= 320)
+	while(index <= 319)
 	{
 		/* METRICS  2/2*/
 		// printf("index : %i\n", index);
@@ -126,13 +152,13 @@ void	ft_draw_line_circle3d(t_v *v, int y, int x)
 		while(z <= tab[index] && z <= 200)
 		{
 			if (dir[index] == 'N')
-				ft_my_mlx_pixel_put(&v->ig2, (printy + z), index, ft_rgb_to_int(0, 255, 0, 255));
+				ft_my_mlx_pixel_put(&v->ig2, (printy + z), index, ft_rgb_to_int(0, 255, 165, 0));
 			if (dir[index] == 'S')
-				ft_my_mlx_pixel_put(&v->ig2, (printy + z), index, ft_rgb_to_int(0, 255, 50, 255));
+				ft_my_mlx_pixel_put(&v->ig2, (printy + z), index, ft_rgb_to_int(0, 255, 69, 0));
 			if (dir[index] == 'O')
-				ft_my_mlx_pixel_put(&v->ig2, (printy + z), index, ft_rgb_to_int(0, 255, 100, 255));
+				ft_my_mlx_pixel_put(&v->ig2, (printy + z), index, ft_rgb_to_int(0, 255, 255, 224));
 			if (dir[index] == 'E')
-				ft_my_mlx_pixel_put(&v->ig2, (printy + z), index, ft_rgb_to_int(0, 255, 150, 255));
+				ft_my_mlx_pixel_put(&v->ig2, (printy + z), index, ft_rgb_to_int(0, 173, 79, 9));
 			z++;
 		}
 		while((printy + z) > tab[index] && (printy + z) <= 200)
