@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 16:10:11 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/23 16:28:27 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/23 17:31:03 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 void	find_dir(t_v *v, double pixely, double pixelx, char *dir)
 {
 	static int i = 0;
-	// printf("%i\n", (i % 319));
-	// printf("((int)pixely modulo XSIZE) : %i\n", ((int)pixely % XSIZE));
-	// printf("((int)pixelx moduo XSIZE) : %i\n", ((int)pixelx % XSIZE));
-	// printf("result N %c\n", v->m.map[((int)pixely + 10) / XSIZE][(int)pixelx / XSIZE]);
-	// printf("result O %c\n", v->m.map[((int)pixely) / XSIZE][((int)pixelx + 10) / XSIZE]);
-	// printf("result E %c\n", v->m.map[(int)pixely / XSIZE][((int)pixelx - 10) / XSIZE]);
-	// printf("result S %c\n", v->m.map[((int)pixely - 10) / XSIZE][(int)pixelx / XSIZE]);
+	printf("%i\n", (i % 959));
+	printf("((int)pixely modulo XSIZE) : %i\n", ((int)pixely % XSIZE));
+	printf("((int)pixelx moduo XSIZE) : %i\n", ((int)pixelx % XSIZE));
+	printf("result N %c\n", v->m.map[((int)pixely + 10) / XSIZE][(int)pixelx / XSIZE]);
+	printf("result O %c\n", v->m.map[((int)pixely) / XSIZE][((int)pixelx + 10) / XSIZE]);
+	printf("result E %c\n", v->m.map[(int)pixely / XSIZE][((int)pixelx - 10) / XSIZE]);
+	printf("result S %c\n", v->m.map[((int)pixely - 10) / XSIZE][(int)pixelx / XSIZE]);
 	i++;
 	if (v->m.map[((int)pixely + 10) / XSIZE][(int)pixelx / XSIZE] == '0' && ((int)pixely % XSIZE == 63 || (int)pixely % XSIZE == 0 || (int)pixely % XSIZE == 62 || (int)pixely % XSIZE == 1))
 	{
@@ -44,7 +44,7 @@ void	find_dir(t_v *v, double pixely, double pixelx, char *dir)
 		*dir = 'S'; 
 	}
 	// printf("*dir : %c\n", *dir);
-	if (!*dir && (i % 319) > 1 && (i % 319) < 319 && (*dir != *(dir - 1) && *dir != *(dir + 1)))
+	if (!*dir && (i % 959) > 1 && (i % 959) < 959 && (*dir != *(dir - 1) && *dir != *(dir + 1)))
 		*dir = *(dir - 1);
 	// printf("strange : %i\n", *dir);
 	if (*dir != 0 && (*dir < 64 || *dir > 90))
@@ -89,7 +89,7 @@ void ft_draw_line_dir3d(t_v *v, int y, int x, double degree, double i, double *t
 			// printf("distance simple : %f\n", *tab);
 			*tab = *tab * sin((180 - 90 - view) * pi / 180);  // correction fish eye
 			// printf("distance fish eye : %f\n", *tab);
-			*tab = (64 / *tab * 277); // a l echelle
+			*tab = (64 / *tab * (277 * 3)); // a l echelle
 			// printf("distance echelle : %f\n", *tab);
 			return ;
 		}
@@ -107,8 +107,8 @@ void	ft_draw_line_circle3d(t_v *v, int y, int x)
 	double i = 0.0;
 	int index = 0;
 	
-	double	tab[320];
-	char	dir[320];
+	double	tab[960];
+	char	dir[960];
 	if (left < 0)
 		left = 360 + left;
 	if (right > 360)
@@ -116,7 +116,7 @@ void	ft_draw_line_circle3d(t_v *v, int y, int x)
 	/* METRIC 1/2 */
 	// printf("degree : %i\n", v->m.degree);
 	/**/
-	while(index <= 319)
+	while(index <= 959)
 	{
 		/* METRICS  2/2*/
 		// printf("index : %i\n", index);
@@ -124,14 +124,14 @@ void	ft_draw_line_circle3d(t_v *v, int y, int x)
 		/**/
 		// printf("index %i\n", index);
 		ft_draw_line_dir3d(v, y, x, left,  i, &tab[index], &dir[index]);
-		i = i + 0.1875;
+		i = i + 0.0625;
 		index++;
 		if ((left + i) > 360)
 			left = - (360 - left);
 	}
 	int z = 0;
 	index = 0;
-	while(index <= 319)
+	while(index <= 959)
 	{
 		/* METRIC 1/1*/
 		// printf("index : %i\n", index);
@@ -139,17 +139,16 @@ void	ft_draw_line_circle3d(t_v *v, int y, int x)
 		/**/
 		/* METRIC 2/2*/
 		// printf("column size apres mise a l'echelle : %f\n", tab[index]);
-		/**/
-		double printy = 100 - (tab[index] / 2);
+		double printy = (Y_3D / 2) - (tab[index] / 2);
 		if (printy < 0)
 			printy = 0;
-		while(z < printy && z <= 200)
+		while(z < printy && z <= 599)
 		{
 			ft_my_mlx_pixel_put(&v->ig2, z, index, ft_rgb_to_int(0, 255, 255, 0));
 			z++;
 		}
 		z = 0;
-		while(z <= tab[index] && z <= 200)
+		while(z <= tab[index] && z <= 599)
 		{
 			if (dir[index] == 'N')
 				ft_my_mlx_pixel_put(&v->ig2, (printy + z), index, ft_rgb_to_int(0, 255, 165, 0));
@@ -161,7 +160,7 @@ void	ft_draw_line_circle3d(t_v *v, int y, int x)
 				ft_my_mlx_pixel_put(&v->ig2, (printy + z), index, ft_rgb_to_int(0, 173, 79, 9));
 			z++;
 		}
-		while((printy + z) > tab[index] && (printy + z) <= 200)
+		while((printy + z) > tab[index] && (printy + z) <= 599)
 		{
 			ft_my_mlx_pixel_put(&v->ig2, (printy + z), index, ft_rgb_to_int(0, 0, 255, 255));
 			z++;

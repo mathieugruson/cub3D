@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:54:34 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/23 13:39:22 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/23 17:05:32 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@
 # include <X11/X.h>
 # include <X11/keysym.h>
 # include <math.h>
+
+# define X_3D 960
+# define Y_3D 600
+
 
 typedef struct s_data {
 	void	*img;

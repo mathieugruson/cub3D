@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 16:01:48 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/23 12:02:02 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/23 17:19:59 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	moove_player(int dir, t_v *v)
 	if (dir == 1)
 	{
 		mlx_put_image_to_window(v->mlx, v->win, v->ig.img, 0, 0);
-		mlx_put_image_to_window(v->mlx, v->win, v->ig2.img, ((v->m.x) * XSIZE), (((v->m.y) * XSIZE) / 2));
+		mlx_put_image_to_window(v->mlx, v->win, v->ig2.img, ((v->m.x) * XSIZE), 0);
 	}
 }
 
@@ -84,7 +84,7 @@ void	ft_moove_display(t_v *v)
 	v->ig.ad = mlx_get_data_addr(v->ig.img, &v->ig.bpp, &v->ig.llen, &v->ig.en);
 	if (v->ig2.img)
 		mlx_destroy_image(v->mlx, v->ig2.img);
-	v->ig2.img = mlx_new_image(v->mlx, 320, 200);
+	v->ig2.img = mlx_new_image(v->mlx, 960, 600);
 	if (!v->ig2.img)
 		ft_stop_all(v, 1);
 	v->ig2.ad = mlx_get_data_addr(v->ig2.img, &v->ig2.bpp, &v->ig2.llen, &v->ig2.en);
