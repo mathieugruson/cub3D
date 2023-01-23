@@ -1,0 +1,12 @@
+		// while (z <= 200)
+		// {
+		// 	if (z < printy) // ciel
+		// 		ft_my_mlx_pixel_put(&v->ig2, z, index, ft_rgb_to_int(0, 255, 255, 255));
+		// 	else if (z <= tab[index]) //mur
+		// 		ft_my_mlx_pixel_put(&v->ig2, (printy + z), index, ft_rgb_to_int(0, 255, 255, 50));
+		// 	else //sol
+		// 	{
+		// 		ft_my_mlx_pixel_put(&v->ig2, z, index, ft_rgb_to_int(0, 50, 255, 50));
+		// 	}
+		// 	z++;
+		// }

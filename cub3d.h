@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:54:34 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/20 19:03:29 by chillion         ###   ########.fr       */
+/*   Updated: 2023/01/23 13:39:22 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int		ft_moove_player(t_v *v, int degree);
 int		ft_moove_ray(t_v *v, int sense);
 
 /* display3d.c */
-void ft_draw_line_dir3d(t_v *v, int y, int x, double degree, double i, double *tab);
+void ft_draw_line_dir3d(t_v *v, int y, int x, double degree, double i, double *tab, char *dir);
 void	ft_draw_line_circle3d(t_v *v, int y, int x);
 
 #endif
