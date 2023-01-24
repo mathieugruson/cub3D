@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:46:25 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/23 17:18:22 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/24 15:35:31 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,14 @@ void	ft_my_mlx_pixel_put(t_data *data, int i, int j, int color)
 
 	dst = data->ad + (i * data->llen + j * (data->bpp / 8));
 	*(unsigned int *)dst = color;
+}
+
+unsigned int	ft_get_color(t_data *data, int x, int y)
+{
+	char	*dst;
+
+	dst = data->ad + (y * data->llen + x * 4);
+	return (*(unsigned int *)dst);
 }
 
 void	ft_clean_map(t_v *v, int i)
@@ -591,12 +599,30 @@ void	ft_init_map(t_v *var)
 		var->m.map[i] = get_next_line(fd);
 		if (!var->m.map[i])
 			break;
-		// ft_printf("var->m.map[i]=%s", var->m.map[i]);
 		i++;
 	}
-	// ft_printf("\n");
 	var->m.y = i; // H
 	var->m.x = ft_strlen(var->m.map[0]) - 1; // W
+}
+
+void	ft_init_sprites(t_v *v)
+{
+	v->walle.img = mlx_xpm_file_to_image(v->mlx, "tx/walle.xpm", &v->walle.x, &v->walle.y);
+	if (!v->walle.img)
+		ft_close_event(v);
+	v->walle.ad = mlx_get_data_addr(v->walle.img, &v->walle.bpp, &v->walle.llen, &v->walle.en);
+	v->walln.img = mlx_xpm_file_to_image(v->mlx, "tx/walln.xpm", &v->walln.x, &v->walln.y);
+	if (!v->walln.img)
+		ft_close_event(v);
+	v->walln.ad = mlx_get_data_addr(v->walln.img, &v->walln.bpp, &v->walln.llen, &v->walln.en);
+	v->walls.img = mlx_xpm_file_to_image(v->mlx, "tx/walls.xpm", &v->walls.x, &v->walls.y);
+	if (!v->walls.img)
+		ft_close_event(v);
+	v->walls.ad = mlx_get_data_addr(v->walls.img, &v->walls.bpp, &v->walls.llen, &v->walls.en);
+	v->wallw.img = mlx_xpm_file_to_image(v->mlx, "tx/wallw.xpm", &v->wallw.x, &v->wallw.y);
+	if (!v->wallw.img)
+		ft_close_event(v);
+	v->wallw.ad = mlx_get_data_addr(v->wallw.img, &v->wallw.bpp, &v->wallw.llen, &v->wallw.en);
 }
 
 void	ft_init_mlx(t_v *var)
@@ -604,6 +630,7 @@ void	ft_init_mlx(t_v *var)
 	var->mlx = mlx_init();
 	if (!var->mlx)
 		return (exit(1));
+	ft_init_sprites(var);
 	var->win = mlx_new_window(var->mlx, ((var->m.x) * XSIZE) + (1000), (var->m.y * XSIZE + 200), "cub3D");
 	if (!var->win)
 		return (mlx_destroy_display(var->mlx), free(var->mlx), exit(1));

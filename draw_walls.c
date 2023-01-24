@@ -6,33 +6,28 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 16:55:56 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/23 17:01:50 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/24 15:28:59 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// void	ft_draw_wall(t_v *v, int x, int y)
-// {
-// 	double		i;
-// 	double		j;
-// 	int			color;
-// 	double		ratio;
-
-// 	j = 0;
-// 	ratio = ((double)v->sb.w / (double)(((v->m.h) * v->m.w)));
-// 	x = x - (((v->m.h) * v->m.w) / 2);
-// 	y = y - (((v->m.h) * v->m.w) / 2);
-// 	while (j < (double)((v->m.h) * v->m.w))
-// 	{
-// 		i = 0;
-// 		while (i < (double)((v->m.h) * v->m.w))
-// 		{
-// 			color = ft_get_color(&v->sb, i * ratio, j * ratio);
-// 			if (color != 0x000000FF)
-// 				ft_my_mlx_pixel_put(&v->ig, (x + i), (y + j), color);
-// 			i++;
-// 		}
-// 		j++;
-// 	}
-// }
+void	ft_init_new_sprites(t_v *v)
+{
+	v->walle.img = mlx_xpm_file_to_image(v->mlx, "tx/walle.xpm", &v->walle.y, &v->walle.x);
+	if (!v->walle.img)
+		ft_close_event(v);
+	v->walle.ad = mlx_get_data_addr(v->walle.img, &v->walle.bpp, &v->walle.llen, &v->walle.en);
+	v->walln.img = mlx_xpm_file_to_image(v->mlx, "tx/walln.xpm", &v->walln.y, &v->walln.x);
+	if (!v->walln.img)
+		ft_close_event(v);
+	v->walln.ad = mlx_get_data_addr(v->walln.img, &v->walln.bpp, &v->walln.llen, &v->walln.en);
+	v->walls.img = mlx_xpm_file_to_image(v->mlx, "tx/walls.xpm", &v->walls.y, &v->walls.x);
+	if (!v->walls.img)
+		ft_close_event(v);
+	v->walls.ad = mlx_get_data_addr(v->walls.img, &v->walls.bpp, &v->walls.llen, &v->walls.en);
+	v->wallw.img = mlx_xpm_file_to_image(v->mlx, "tx/wallw.xpm", &v->wallw.y, &v->wallw.x);
+	if (!v->wallw.img)
+		ft_close_event(v);
+	v->wallw.ad = mlx_get_data_addr(v->wallw.img, &v->wallw.bpp, &v->wallw.llen, &v->wallw.en);
+}

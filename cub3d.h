@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:54:34 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/23 17:05:32 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/24 15:35:53 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,10 @@ typedef struct s_var
 	void	*win2;
 	t_data	ig;
 	t_data	ig2;
+	t_data	walle;
+	t_data	walln;
+	t_data	walls;
+	t_data	wallw;
 	t_map	m;
 }	t_v;
 
@@ -86,6 +90,7 @@ typedef struct s_var
 
 /* cub3d.c */
 void	ft_my_mlx_pixel_put(t_data *data, int i, int j, int color);
+unsigned int	ft_get_color(t_data *data, int x, int y);
 int	ft_rgb_to_int(int t, int r, int g, int b);
 double	find_end_x(double degree);
 double	find_end_y(double degree);
@@ -111,7 +116,7 @@ int		ft_moove_player(t_v *v, int degree);
 int		ft_moove_ray(t_v *v, int sense);
 
 /* display3d.c */
-void ft_draw_line_dir3d(t_v *v, int y, int x, double degree, double i, double *tab, char *dir);
+void	ft_draw_line_dir3d(t_v *v, int y, int x, double degree, double i, double *tab, char *dir, double *texture);
 void	ft_draw_line_circle3d(t_v *v, int y, int x);
 
 #endif
