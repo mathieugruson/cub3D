@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:46:25 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/24 15:35:31 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/24 17:58:00 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -648,7 +648,7 @@ void	ft_init_mlx(t_v *var)
 	ft_init_map_value(var);
 	ft_draw_line_map(var);
 	ft_check_map(var);
-	ft_draw_line_circle3d(var, var->m.ppy, var->m.ppx);
+	ft_display_3d(var, var->m.ppy, var->m.ppx);
 	mlx_put_image_to_window(var->mlx, var->win, var->ig.img, 0, 0);
 	mlx_put_image_to_window(var->mlx, var->win, var->ig2.img, ((var->m.x) * XSIZE), 0);
 	mlx_loop(var->mlx);

@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 16:01:48 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/23 17:19:59 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/24 17:58:00 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	ft_moove_display(t_v *v)
 	ft_check_pix_map(v);
 	ft_draw_pix_line_circle(v, v->m.ppy, v->m.ppx);
 	ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
-	ft_draw_line_circle3d(v, v->m.ppy, v->m.ppx);
+	ft_display_3d(v, v->m.ppy, v->m.ppx);
 }
 
 int	ft_moove_player(t_v *v, int degree)

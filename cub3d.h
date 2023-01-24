@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:54:34 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/24 15:35:53 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/24 19:15:29 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,28 @@
 # define X_3D 960
 # define Y_3D 600
 
+typedef struct s_raycast
+{
+	/* ft_display_3d.c */
+	int y;
+	int x;
+	int right;
+	int index;
+	double left;
+	double i;
+	double printy;
+	double	tab[960];
+	char	dir[960];
+	double	texture[960];
+
+	/* ft_ray_cast.c */
+	double resultx;
+	double resulty;
+	double pixely;
+	double pixelx;
+	int pixels;
+	
+}	t_raycast;
 
 typedef struct s_data {
 	void	*img;
@@ -116,7 +138,8 @@ int		ft_moove_player(t_v *v, int degree);
 int		ft_moove_ray(t_v *v, int sense);
 
 /* display3d.c */
-void	ft_draw_line_dir3d(t_v *v, int y, int x, double degree, double i, double *tab, char *dir, double *texture);
-void	ft_draw_line_circle3d(t_v *v, int y, int x);
+void ft_ray_cast(t_v *v, int y, int x, double degree, double i, double *tab, char *dir, double *texture);
+void	ft_display_3d(t_v *v, int y, int x);
 
 #endif
+
