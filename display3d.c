@@ -6,56 +6,47 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 16:10:11 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/23 17:31:03 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/24 13:38:21 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	find_dir(t_v *v, double pixely, double pixelx, char *dir)
+void	find_diry(t_v *v, double pixely, double pixelx, char *dir)
 {
 	static int i = 0;
-	printf("%i\n", (i % 959));
-	printf("((int)pixely modulo XSIZE) : %i\n", ((int)pixely % XSIZE));
-	printf("((int)pixelx moduo XSIZE) : %i\n", ((int)pixelx % XSIZE));
-	printf("result N %c\n", v->m.map[((int)pixely + 10) / XSIZE][(int)pixelx / XSIZE]);
-	printf("result O %c\n", v->m.map[((int)pixely) / XSIZE][((int)pixelx + 10) / XSIZE]);
-	printf("result E %c\n", v->m.map[(int)pixely / XSIZE][((int)pixelx - 10) / XSIZE]);
-	printf("result S %c\n", v->m.map[((int)pixely - 10) / XSIZE][(int)pixelx / XSIZE]);
 	i++;
-	if (v->m.map[((int)pixely + 10) / XSIZE][(int)pixelx / XSIZE] == '0' && ((int)pixely % XSIZE == 63 || (int)pixely % XSIZE == 0 || (int)pixely % XSIZE == 62 || (int)pixely % XSIZE == 1))
+	if (v->m.map[((int)pixely + 2) / XSIZE][(int)pixelx / XSIZE] == '0')
 	{
-		// printf("result N %c\n", v->m.map[((int)pixely + 10) / XSIZE][(int)pixelx / XSIZE]);
 		*dir = 'N'; // OK
 	}
-	if (v->m.map[(int)pixely / XSIZE][((int)pixelx + 10) / XSIZE] == '0'&& ((int)pixelx % XSIZE == 63 || (int)pixelx % XSIZE == 0 || (int)pixelx % XSIZE == 62 || (int)pixelx % XSIZE == 1))
+	if (v->m.map[((int)pixely - 2) / XSIZE][(int)pixelx / XSIZE] == '0')
 	{
-		// printf("result O %c\n", v->m.map[(int)pixely / XSIZE][((int)pixelx + 10) / XSIZE]);
-		*dir = 'O';
-	}
-	if (v->m.map[(int)pixely / XSIZE][((int)pixelx - 10) / XSIZE] == '0'&& ((int)pixelx % XSIZE == 63 || (int)pixelx % XSIZE == 0 || (int)pixelx % XSIZE == 62 || (int)pixelx % XSIZE == 1))
-	{
-		// printf("result E %c\n", v->m.map[(int)pixely / XSIZE][((int)pixelx - 10) / XSIZE]);
-		*dir = 'E';
-	}
-	if (v->m.map[((int)pixely - 10) / XSIZE][(int)pixelx / XSIZE] == '0' && ((int)pixely % XSIZE == 63 || (int)pixely % XSIZE == 0 || (int)pixely % XSIZE == 62 || (int)pixely % XSIZE == 1))
-	{
-		// printf("result S %c\n", v->m.map[((int)pixely - 10) / XSIZE][(int)pixelx / XSIZE]);
 		*dir = 'S'; 
 	}
-	// printf("*dir : %c\n", *dir);
-	if (!*dir && (i % 959) > 1 && (i % 959) < 959 && (*dir != *(dir - 1) && *dir != *(dir + 1)))
-		*dir = *(dir - 1);
-	// printf("strange : %i\n", *dir);
 	if (*dir != 0 && (*dir < 64 || *dir > 90))
 		*dir = *(dir - 1);
-	// printf("strange after : %i\n", *dir);
+}
+
+void	find_dirx(t_v *v, double pixely, double pixelx, char *dir)
+{
+	static int i = 0;
+	i++;
+	if (v->m.map[(int)pixely / XSIZE][((int)pixelx + 2) / XSIZE] == '0')
+	{
+		*dir = 'O';
+	}
+	if (v->m.map[(int)pixely / XSIZE][((int)pixelx - 2) / XSIZE] == '0')
+	{
+		*dir = 'E';
+	}
+	if (*dir != 0 && (*dir < 64 || *dir > 90))
+		*dir = *(dir - 1);
 }
 
 void ft_draw_line_dir3d(t_v *v, int y, int x, double degree, double i, double *tab, char *dir)
 {
-	// y = y + (XSIZE / 2);
-	// x = x + (XSIZE / 2);
+
 	double view = 30 - i; ;
 	if (view < 0)
 		view *= -1;
@@ -66,17 +57,19 @@ void ft_draw_line_dir3d(t_v *v, int y, int x, double degree, double i, double *t
 	double resulty = find_end_y(degree + i); //arrondi
 	// printf("y %i, x %i\n", y, x);
 	// printf("resutly %f, resultx %f\n", resulty, resultx);
-	double pixelx = x; //ATTENTION : qd j enleve ca ca marche voir avec cyril */;
-	double pixely = y; //ATTENTION : qd j enleve ca ca marche voir avec cyril */;
+	double pixelx = x; 
+	double pixely = y;
 	// printf("pixely %f, pixelx %f\n", pixely, pixelx);
 	int pixels = sqrt((resultx * resultx) + (resulty * resulty));
 	resultx /= pixels;
 	resulty /= pixels;
 	while (1)
 	{
+		ft_my_mlx_pixel_put(&v->ig, pixely, pixelx, ft_rgb_to_int(0, 50, 150, 250));
+		pixelx += resultx;
 		if (v->m.map[(int)pixely / XSIZE][(int)pixelx / XSIZE] == '1')
 		{
-			find_dir(v, pixely, pixelx, dir);
+			find_dirx(v, pixely, pixelx, dir);
 			// printf("dir : %c\n", *dir);
 			// printf("y : %i, pixely : %f, x : %i, pixelx %f\n", y, pixely, x, pixelx);
 			double distx = ((double)x - pixelx);
@@ -93,10 +86,26 @@ void ft_draw_line_dir3d(t_v *v, int y, int x, double degree, double i, double *t
 			// printf("distance echelle : %f\n", *tab);
 			return ;
 		}
-		// printf(" while y : %i, pixely : %f, x : %i, pixelx %f\n", y, pixely, x, pixelx);
-		ft_my_mlx_pixel_put(&v->ig, pixely, pixelx, ft_rgb_to_int(0, 50, 150, 250));
-		pixelx += resultx;
 		pixely += resulty;
+		if (v->m.map[(int)pixely / XSIZE][(int)pixelx / XSIZE] == '1')
+		{
+			find_diry(v, pixely, pixelx, dir);
+			// printf("dir : %c\n", *dir);
+			// printf("y : %i, pixely : %f, x : %i, pixelx %f\n", y, pixely, x, pixelx);
+			double distx = ((double)x - pixelx);
+			if (distx < 0)
+				distx *= -1;
+			double disty = ((double)y - pixely);
+			if (disty < 0)
+				disty *= -1;
+			*tab = sqrt((distx * distx) + (disty * disty)); // taille du rayon
+			// printf("distance simple : %f\n", *tab);
+			*tab = *tab * sin((180 - 90 - view) * pi / 180);  // correction fish eye
+			// printf("distance fish eye : %f\n", *tab);
+			*tab = (64 / *tab * (277 * 3)); // a l echelle
+			// printf("distance echelle : %f\n", *tab);
+			return ;
+		}
 	}
 }
 
