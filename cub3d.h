@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:54:34 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/24 19:15:29 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/24 19:34:51 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ int		ft_moove_player(t_v *v, int degree);
 int		ft_moove_ray(t_v *v, int sense);
 
 /* display3d.c */
-void ft_ray_cast(t_v *v, int y, int x, double degree, double i, double *tab, char *dir, double *texture);
+int		ft_ray_cast(t_v *v, int y, int x, t_raycast *rc);
 void	ft_display_3d(t_v *v, int y, int x);
 
 #endif
