@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 16:10:11 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/24 17:28:39 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/24 17:47:54 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,11 @@
 
 void	ft_draw_wall(t_v *v, t_data d, int x, int y, double wall_size, double texture, int i)
 {
-	// double		i;
-	// double		j;
 	int			color;
 	double		ratio;
 
-	// j = 0;
 	ratio = ((double)64 / wall_size); // diviser par la taille mur ;
 	ratio *= i;
-	// printf("ratio %f, wall_size %f, texture %f\n", ratio, wall_size, texture);
-	// x = ((920 / 64) * (600 / 64)) / 2 - ((920 / 64) * (600 / 64) / 2); // depart sur l ecran en X
-	// y = ((920 / 64) * (600 / 64)) / 2 - ((920 / 64) * (600 / 64) / 2); // depart sur l ecran en Y
 	color = ft_get_color(&d, texture, ratio); /* avoir la couleur de l'image a tel enddroit, 
 	il faut rajouter a i la distance obtenue avant pr etre sur la bonne colonne */
 	ft_my_mlx_pixel_put(&v->ig2, x, y, color); // envoyer
@@ -144,35 +138,29 @@ void	ft_draw_line_circle3d(t_v *v, int y, int x)
 	while(index <= 959)
 	{
 		double printy = (Y_3D / 2) - (tab[index] / 2);
-		if (printy < 0)
-			printy = 0;
 		while(z < printy && z <= 599)
 		{
 			ft_my_mlx_pixel_put(&v->ig2, z, index, ft_rgb_to_int(0, 255, 255, 0));
 			z++;
 		}
 		z = 0;
-		while(z <= tab[index] && z <= 599)
+		while(z <= tab[index] && (printy + z) <= 599)
 		{
-			if (dir[index] == 'N')
+			if (dir[index] == 'N' && (printy + z) > 0)
 			{
-				// ft_my_mlx_pixel_put(&v->ig2, (printy + z), index, ft_rgb_to_int(0, 255, 165, 0));
 				ft_draw_wall(v, v->walln, (printy + z), index, tab[index], texture[index], z);
 			}
-			if (dir[index] == 'S')
+			if (dir[index] == 'S' && (printy + z) > 0)
 			{
-				// ft_my_mlx_pixel_put(&v->ig2, (printy + z), index, ft_rgb_to_int(0, 255, 69, 0));
-				ft_draw_wall(v, v->walln, (printy + z), index, tab[index], texture[index], z);
+				ft_draw_wall(v, v->walls, (printy + z), index, tab[index], texture[index], z);
 			}
-			if (dir[index] == 'O')
+			if (dir[index] == 'O' && (printy + z) > 0)
 			{
-				// ft_my_mlx_pixel_put(&v->ig2, (printy + z), index, ft_rgb_to_int(0, 255, 255, 224));
-				ft_draw_wall(v, v->walln, (printy + z), index, tab[index], texture[index], z);
+				ft_draw_wall(v, v->wallw, (printy + z), index, tab[index], texture[index], z);
 			}
-			if (dir[index] == 'E')
+			if (dir[index] == 'E' && (printy + z) > 0)
 			{
-				// ft_my_mlx_pixel_put(&v->ig2, (printy + z), index, ft_rgb_to_int(0, 173, 79, 9));
-				ft_draw_wall(v, v->walln, (printy + z), index, tab[index], texture[index], z);
+				ft_draw_wall(v, v->walle, (printy + z), index, tab[index], texture[index], z);
 			}
 			z++;
 		}
