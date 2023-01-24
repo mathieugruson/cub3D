@@ -6,36 +6,28 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 16:10:11 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/24 16:58:36 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/24 17:28:39 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	ft_draw_wall(t_v *v, t_data d, int x, int y, double wall_size, double texture)
+void	ft_draw_wall(t_v *v, t_data d, int x, int y, double wall_size, double texture, int i)
 {
-	double		i;
-	double		j;
+	// double		i;
+	// double		j;
 	int			color;
 	double		ratio;
 
-	j = 0;
+	// j = 0;
 	ratio = ((double)64 / wall_size); // diviser par la taille mur ;
-	printf("ratio %f, wall_size %f, texture %f\n", ratio, wall_size, texture);
+	ratio *= i;
+	// printf("ratio %f, wall_size %f, texture %f\n", ratio, wall_size, texture);
 	// x = ((920 / 64) * (600 / 64)) / 2 - ((920 / 64) * (600 / 64) / 2); // depart sur l ecran en X
 	// y = ((920 / 64) * (600 / 64)) / 2 - ((920 / 64) * (600 / 64) / 2); // depart sur l ecran en Y
-	while (j <= (double)wall_size && j <= 599) // taille mur logique
-	{
-		i = 0;
-		while (i < 1) // 1 ? je pense car une colonne par pixel
-		{
-			color = ft_get_color(&d, texture * ratio, j * ratio); /* avoir la couleur de l'image a tel enddroit, 
-			il faut rajouter a i la distance obtenue avant pr etre sur la bonne colonne */
-			ft_my_mlx_pixel_put(&v->ig2, (y + j), (x + i), color); // envoyer
-			i++;
-		}
-		j++;
-	}
+	color = ft_get_color(&d, texture, ratio); /* avoir la couleur de l'image a tel enddroit, 
+	il faut rajouter a i la distance obtenue avant pr etre sur la bonne colonne */
+	ft_my_mlx_pixel_put(&v->ig2, x, y, color); // envoyer
 }
 
 // 0.5 ca double la taille
@@ -93,7 +85,7 @@ void ft_draw_line_dir3d(t_v *v, int y, int x, double degree, double i, double *t
 		{
 			find_dirx(v, pixely, pixelx, dir);
 			*texture = (int)pixely % 64;
-			printf("texturex : %f\n", *texture);
+			// printf("texturex : %f\n", *texture);
 			double distx = ((double)x - pixelx);
 			if (distx < 0)
 				distx *= -1;
@@ -110,7 +102,7 @@ void ft_draw_line_dir3d(t_v *v, int y, int x, double degree, double i, double *t
 		{
 			find_diry(v, pixely, pixelx, dir);
 			*texture = (int)pixelx % 64;
-			printf("texturey : %f\n", *texture);
+			// printf("texturey : %f\n", *texture);
 			double distx = ((double)x - pixelx);
 			if (distx < 0)
 				distx *= -1;
@@ -165,24 +157,24 @@ void	ft_draw_line_circle3d(t_v *v, int y, int x)
 			if (dir[index] == 'N')
 			{
 				// ft_my_mlx_pixel_put(&v->ig2, (printy + z), index, ft_rgb_to_int(0, 255, 165, 0));
-				ft_draw_wall(v, v->walln, (printy + z), index, tab[index], texture[index]);
+				ft_draw_wall(v, v->walln, (printy + z), index, tab[index], texture[index], z);
 			}
 			if (dir[index] == 'S')
 			{
 				// ft_my_mlx_pixel_put(&v->ig2, (printy + z), index, ft_rgb_to_int(0, 255, 69, 0));
-				ft_draw_wall(v, v->walls, (printy + z), index, tab[index], texture[index]);
+				ft_draw_wall(v, v->walln, (printy + z), index, tab[index], texture[index], z);
 			}
 			if (dir[index] == 'O')
 			{
 				// ft_my_mlx_pixel_put(&v->ig2, (printy + z), index, ft_rgb_to_int(0, 255, 255, 224));
-				ft_draw_wall(v, v->wallw, (printy + z), index, tab[index], texture[index]);
+				ft_draw_wall(v, v->walln, (printy + z), index, tab[index], texture[index], z);
 			}
 			if (dir[index] == 'E')
 			{
 				// ft_my_mlx_pixel_put(&v->ig2, (printy + z), index, ft_rgb_to_int(0, 173, 79, 9));
-				ft_draw_wall(v, v->walle, (printy + z), index, tab[index], texture[index]);
+				ft_draw_wall(v, v->walln, (printy + z), index, tab[index], texture[index], z);
 			}
-			z = 600;
+			z++;
 		}
 		while((printy + z) > tab[index] && (printy + z) <= 599)
 		{
