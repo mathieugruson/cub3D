@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:54:34 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/24 19:34:51 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/24 20:24:58 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,9 +137,22 @@ void	ft_moove_display(t_v *v);
 int		ft_moove_player(t_v *v, int degree);
 int		ft_moove_ray(t_v *v, int sense);
 
-/* display3d.c */
-int		ft_ray_cast(t_v *v, int y, int x, t_raycast *rc);
+
+/* ft_display3d.c */
+
+void	ft_draw_wall(t_v *v, t_data d, t_raycast *rc);
+void	ft_draw_texture_and_floor(t_v *v, t_raycast *rc);
+void	init_raycast_value(t_v *v, t_raycast *rc);
 void	ft_display_3d(t_v *v, int y, int x);
+
+/* ft_raycast.c */
+
+void	find_diry(t_v *v, double pixely, double pixelx, char *dir);
+void	find_dirx(t_v *v, double pixely, double pixelx, char *dir);
+void	collect_raycat_value_y(t_v *v, t_raycast *rc, int y, int x);
+void	collect_raycat_value_x(t_v *v, t_raycast *rc, int y, int x);
+int		ft_ray_cast(t_v *v, int y, int x, t_raycast *rc);
+
 
 #endif
 

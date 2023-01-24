@@ -312,29 +312,3 @@ void	ft_paint_player_pixel(t_v *v, int y, int x)
 // 		// mlx_put_image_to_window(v->mlx2, v->win2, v->ig2.img, 0, 0);
 // 	}
 // }
-
-
-// void	ft_draw_wall(t_v *v, t_data d, int x, int y)
-// {
-// 	double		i;
-// 	double		j;
-// 	int			color;
-// 	double		ratio;
-
-// 	j = 0;
-// 	ratio = 1; //((double)d.y / (double)((v->m.y)));
-// 	x = 100; // - (((v->m.x) * v->m.y) / 2);
-// 	y = 100; // - (((v->m.x) * v->m.y) / 2);
-// 	while (j < (64)) //(double)(10 * 10)) // (double)((v->m.x) * v->m.y))
-// 	{
-// 		i = 0;
-// 		while (i < (64)) //(double)(10 * 10)) // (double)((v->m.x) * v->m.y))
-// 		{
-// 			color = ft_get_color(&d, i * ratio, j * ratio); // avoir la couleur de l'image a tel enddroit
-// 			// if (color != 0x000000FF)
-// 			ft_my_mlx_pixel_put(&v->ig2, (y + j), (x + i), color); // envoyer
-// 			i++;
-// 		}
-// 		j++;
-// 	}
-// }
