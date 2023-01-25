@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 16:01:48 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/25 12:23:39 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/25 15:13:23 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	moove_player(int dir, t_v *v)
 	{
 		// mlx_put_image_to_window(v->mlx, v->win, v->ig.img, 0, 0);
 		mlx_put_image_to_window(v->mlx, v->win, v->ig2.img, 0, 0);
+		mlx_put_image_to_window(v->mlx, v->win, v->ig3.img, 20, 380);
 	}
 }
 
@@ -88,9 +89,14 @@ void	ft_moove_display(t_v *v)
 	if (!v->ig2.img)
 		ft_stop_all(v, 1);
 	v->ig2.ad = mlx_get_data_addr(v->ig2.img, &v->ig2.bpp, &v->ig2.llen, &v->ig2.en);
+	if (v->ig3.img)
+		mlx_destroy_image(v->mlx, v->ig3.img);
+	v->ig3.img = mlx_new_image(v->mlx, 200, 200);
+	if (!v->ig3.img)
+		ft_stop_all(v, 1);
+	v->ig3.ad = mlx_get_data_addr(v->ig3.img, &v->ig3.bpp, &v->ig3.llen, &v->ig3.en);
 	ft_draw_line_map(v);
 	ft_check_pix_map(v);
-	ft_draw_pix_line_circle(v, v->m.ppy, v->m.ppx);
 	ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
 	ft_display_3d(v, v->m.ppy, v->m.ppx);
 }

@@ -6,13 +6,13 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 16:10:11 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/24 20:22:41 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/25 15:29:35 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	ft_draw_wall(t_v *v, t_data d, t_raycast *rc)
+void	ft_draw_wall_ratio(t_v *v, t_data d, t_raycast *rc)
 {
 	int		color;
 	double	ratio;
@@ -23,7 +23,7 @@ void	ft_draw_wall(t_v *v, t_data d, t_raycast *rc)
 	wall_size = rc->tab[rc->index];
 	x = rc->printy + rc->i;
 	y = rc->index;
-	ratio = ((double)64 / wall_size);
+	ratio = ((double)d.y / wall_size);
 	ratio *= rc->i;
 	color = ft_get_color(&d, rc->texture[rc->index], ratio);
 	ft_my_mlx_pixel_put(&v->ig2, x, y, color);
@@ -34,13 +34,13 @@ void	ft_draw_texture_and_floor(t_v *v, t_raycast *rc)
 	while (rc->i <= rc->tab[rc->index] && (rc->printy + rc->i) <= 599)
 	{
 		if (rc->dir[rc->index] == 'N' && (rc->printy + rc->i) > 0)
-			ft_draw_wall(v, v->walln, rc);
+			ft_draw_wall_ratio(v, v->walln, rc);
 		if (rc->dir[rc->index] == 'S' && (rc->printy + rc->i) > 0)
-			ft_draw_wall(v, v->walls, rc);
+			ft_draw_wall_ratio(v, v->walls, rc);
 		if (rc->dir[rc->index] == 'O' && (rc->printy + rc->i) > 0)
-			ft_draw_wall(v, v->wallw, rc);
+			ft_draw_wall_ratio(v, v->wallw, rc);
 		if (rc->dir[rc->index] == 'E' && (rc->printy + rc->i) > 0)
-			ft_draw_wall(v, v->walle, rc);
+			ft_draw_wall_ratio(v, v->walle, rc);
 		rc->i++;
 	}
 	while ((rc->printy + rc->i) > rc->tab[rc->index] \

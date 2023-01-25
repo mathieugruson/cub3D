@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:54:34 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/24 20:24:58 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/25 13:40:10 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ typedef struct s_var
 	void	*win2;
 	t_data	ig;
 	t_data	ig2;
+	t_data	ig3;
 	t_data	walle;
 	t_data	walln;
 	t_data	walls;
@@ -120,7 +121,6 @@ int		ft_close_event(t_v *v);
 void	ft_reset_paint(t_v *v, int y, int x);
 void	ft_paint_player_pixel(t_v *v, int y, int x);
 void	ft_draw_line_circle(t_v *v, int y, int x);
-void	ft_draw_pix_line_circle(t_v *v, double y, double x);
 void	ft_check_map(t_v *v);
 void	ft_check_pix_map(t_v *v);
 void	ft_draw_line_map(t_v *v);
@@ -140,7 +140,7 @@ int		ft_moove_ray(t_v *v, int sense);
 
 /* ft_display3d.c */
 
-void	ft_draw_wall(t_v *v, t_data d, t_raycast *rc);
+void	ft_draw_wall_ratio(t_v *v, t_data d, t_raycast *rc);
 void	ft_draw_texture_and_floor(t_v *v, t_raycast *rc);
 void	init_raycast_value(t_v *v, t_raycast *rc);
 void	ft_display_3d(t_v *v, int y, int x);

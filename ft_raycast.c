@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 20:22:08 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/24 20:23:17 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/25 15:11:32 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,10 @@ int	ft_ray_cast(t_v *v, int y, int x, t_raycast *rc)
 	rc->resulty /= rc->pixels;
 	while (1)
 	{
-		ft_my_mlx_pixel_put(&v->ig, rc->pixely, rc->pixelx, \
-		ft_rgb_to_int(0, 50, 150, 250));
+		if ((rc->pixely > v->m.ppy - 100) && (rc->pixely < v->m.ppy + 100) && (rc->pixelx > v->m.ppx - 100) && (rc->pixelx < v->m.ppx + 100))
+		{	
+			ft_my_mlx_pixel_put(&v->ig3, 100 - (v->m.ppy - rc->pixely), 100 - (v->m.ppx - rc->pixelx), ft_rgb_to_int(0, 50, 150, 250));
+		}
 		rc->pixelx += rc->resultx;
 		if (v->m.map[(int)rc->pixely / XSIZE][(int)rc->pixelx / XSIZE] == '1')
 			return (collect_raycat_value_y(v, rc, y, x), 0);
