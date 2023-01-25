@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 16:01:48 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/24 17:58:00 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/25 12:23:39 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void	moove_player(int dir, t_v *v)
 		dir = ft_moove_ray(v, (-5));
 	if (dir == 1)
 	{
-		mlx_put_image_to_window(v->mlx, v->win, v->ig.img, 0, 0);
-		mlx_put_image_to_window(v->mlx, v->win, v->ig2.img, ((v->m.x) * XSIZE), 0);
+		// mlx_put_image_to_window(v->mlx, v->win, v->ig.img, 0, 0);
+		mlx_put_image_to_window(v->mlx, v->win, v->ig2.img, 0, 0);
 	}
 }
 

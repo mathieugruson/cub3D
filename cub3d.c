@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:46:25 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/24 17:58:00 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/25 12:32:36 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -631,7 +631,7 @@ void	ft_init_mlx(t_v *var)
 	if (!var->mlx)
 		return (exit(1));
 	ft_init_sprites(var);
-	var->win = mlx_new_window(var->mlx, ((var->m.x) * XSIZE) + (1000), (var->m.y * XSIZE + 200), "cub3D");
+	var->win = mlx_new_window(var->mlx, 960, 600, "cub3D");
 	if (!var->win)
 		return (mlx_destroy_display(var->mlx), free(var->mlx), exit(1));
 	var->ig.img = mlx_new_image(var->mlx, ((var->m.x) * XSIZE), (var->m.y * XSIZE));
@@ -649,10 +649,12 @@ void	ft_init_mlx(t_v *var)
 	ft_draw_line_map(var);
 	ft_check_map(var);
 	ft_display_3d(var, var->m.ppy, var->m.ppx);
-	mlx_put_image_to_window(var->mlx, var->win, var->ig.img, 0, 0);
-	mlx_put_image_to_window(var->mlx, var->win, var->ig2.img, ((var->m.x) * XSIZE), 0);
+	mlx_put_image_to_window(var->mlx, var->win, var->ig.img, 5, (600 / 5));
+	mlx_put_image_to_window(var->mlx, var->win, var->ig2.img, 0, 0);
 	mlx_loop(var->mlx);
 }
+
+// 100 * 100 pr la minimap
 
 int	main(void)
 {
