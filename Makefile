@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+         #
+#    By: chillion <chillion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/01 12:07:22 by chillion          #+#    #+#              #
-#    Updated: 2023/01/24 20:25:12 by mgruson          ###   ########.fr        #
+#    Updated: 2023/01/25 15:43:25 by chillion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,9 @@ SRCS =	cub3d.c \
 		moove.c \
 		ft_display_3d.c \
 		ft_raycast.c \
+		map_attack.c \
+		map_checker.c \
+		map_init.c \
 
 LIBFT := libs/libft/libft.a
 MLX := libs/minilibx-linux/libmlx_Linux.a

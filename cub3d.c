@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:46:25 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/25 15:28:59 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/25 19:01:15 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,20 @@ void	ft_clean_map(t_v *v, int i)
 int	ft_close_event(t_v *v)
 {
 	ft_clean_map(v, 0);
-	if (v->ig.img)
-		mlx_destroy_image(v->mlx, v->ig.img);
+	ft_clean_tstr(v->m.map2, 0);
+	ft_clean_tstr(v->args, 0);
+	if (v->walle.img)
+		mlx_destroy_image(v->mlx, v->walle.img);
+	if (v->walln.img)
+		mlx_destroy_image(v->mlx, v->walln.img);
+	if (v->walls.img)
+		mlx_destroy_image(v->mlx, v->wallw.img);
+	if (v->wallw.img)
+		mlx_destroy_image(v->mlx, v->walls.img);
+	if (v->ig2.img)
+		mlx_destroy_image(v->mlx, v->ig2.img);
+	if (v->ig3.img)
+		mlx_destroy_image(v->mlx, v->ig3.img);
 	if (v->win)
 		mlx_destroy_window(v->mlx, v->win);
 	if (v->mlx)
@@ -52,6 +64,18 @@ int	ft_close_event(t_v *v)
 		free(v->mlx);
 	}
 	exit(0);
+}
+
+void	init_degree(t_v *var, int *degree)
+{
+	if (var->pos == 'N')
+		*degree = 0;
+	if (var->pos == 'S')
+		*degree = 180;
+	if (var->pos == 'E')
+		*degree = 90;
+	if (var->pos == 'W')
+		*degree = 270;
 }
 
 void	ft_init_data(t_v *var)
@@ -64,7 +88,7 @@ void	ft_init_data(t_v *var)
 	var->ig.llen = 0;
 	var->ig.en = 0;
 	var->ig.ad = 0;
-	var->m.degree = 0;
+	init_degree(var, &var->m.degree);
 	var->m.degree_status = 0;
 	var->m.resultx = 0;
 	var->m.resulty = 0;
@@ -256,8 +280,9 @@ void	ft_init_map_value(t_v *v)
 		j = 0;
 		while (v->m.map[i][j])
 		{
-			if (v->m.map[i][j] == 'P')
+			if (v->m.map[i][j] == v->pos)
 			{
+				
 				v->m.py = i;
 				v->m.px = j;
 				v->m.ppy = (i * XSIZE) + (XSIZE / 2);
@@ -269,6 +294,7 @@ void	ft_init_map_value(t_v *v)
 				v->m.pixels = sqrt((v->m.resultx * v->m.resultx) + (v->m.resulty * v->m.resulty));
 				v->m.resultx /= v->m.pixels;
 				v->m.resulty  /= v->m.pixels;
+				break ;
 			}
 			j++;
 		}
@@ -312,7 +338,7 @@ void	ft_check_map(t_v *v)
 		{
 			if (v->m.map[i][j] == '1')
 				ft_paint_map(v, i, j);
-			if (v->m.map[i][j] == 'P') // ATTENTION A MODIFIER 
+			if (v->m.map[i][j] == v->pos) // ATTENTION A MODIFIER 
 			{
 				ft_paint_player_pixel(v, v->m.ppy, v->m.ppx);
 			}
@@ -322,67 +348,54 @@ void	ft_check_map(t_v *v)
 	}
 }
 
-void	ft_init_map(t_v *var)
-{
-	int i;
-	int fd;
-	char *str;
-
-	i = 0;
-	fd = open("test.map", O_RDONLY);
-	if (fd < 0)
-		return (ft_printf("%s\n", strerror(errno)), exit(1));
-	while (1)
-	{
-		str = get_next_line(fd);
-		if (!str)
-			break;
-		else
-			free(str);
-		i++;
-	}
-	if (i < 1)
-		return (write(2, "Error : Map Size\n", 18), exit(1));
-	var->m.map = (char **)malloc(sizeof(char *) * (i + 1));
-	if (!var->m.map)
-		return (exit(1));
-	var->m.map[i] = 0;
-	i = 0;
-	close(fd);
-	fd = open("test.map", O_RDONLY);
-	while (1)
-	{
-		var->m.map[i] = get_next_line(fd);
-		if (!var->m.map[i])
-			break;
-		i++;
-	}
-	var->m.y = i; // H
-	var->m.x = ft_strlen(var->m.map[0]) - 1; // W
-}
-
 void	ft_init_sprites(t_v *v)
 {
-	v->walle.img = mlx_xpm_file_to_image(v->mlx, "tx/walle.xpm", &v->walle.x, &v->walle.y);
+	v->walle.img = 0;
+	v->walln.img = 0;
+	v->walls.img = 0;
+	v->wallw.img = 0;
+	char **tmp;
+
+	tmp = ft_split(v->valea, ' ');
+	tmp[1][ft_strlen(tmp[1]) - 1] = 0;
+	v->walle.img = mlx_xpm_file_to_image(v->mlx, tmp[1], &v->walle.x, &v->walle.y);
+	ft_clean_tstr(tmp, 0);
 	if (!v->walle.img)
 		ft_close_event(v);
 	v->walle.ad = mlx_get_data_addr(v->walle.img, &v->walle.bpp, &v->walle.llen, &v->walle.en);
-	v->walln.img = mlx_xpm_file_to_image(v->mlx, "tx/walln.xpm", &v->walln.x, &v->walln.y);
+	tmp = ft_split(v->valno, ' ');
+	tmp[1][ft_strlen(tmp[1]) - 1] = 0;
+	v->walln.img = mlx_xpm_file_to_image(v->mlx, tmp[1], &v->walln.x, &v->walln.y);
+	ft_clean_tstr(tmp, 0);
 	if (!v->walln.img)
 		ft_close_event(v);
 	v->walln.ad = mlx_get_data_addr(v->walln.img, &v->walln.bpp, &v->walln.llen, &v->walln.en);
-	v->walls.img = mlx_xpm_file_to_image(v->mlx, "tx/walls.xpm", &v->walls.x, &v->walls.y);
+	tmp = ft_split(v->valso, ' ');
+	tmp[1][ft_strlen(tmp[1]) - 1] = 0;
+	v->walls.img = mlx_xpm_file_to_image(v->mlx, tmp[1], &v->walls.x, &v->walls.y);
+	ft_clean_tstr(tmp, 0);
 	if (!v->walls.img)
 		ft_close_event(v);
 	v->walls.ad = mlx_get_data_addr(v->walls.img, &v->walls.bpp, &v->walls.llen, &v->walls.en);
-	v->wallw.img = mlx_xpm_file_to_image(v->mlx, "tx/wallw.xpm", &v->wallw.x, &v->wallw.y);
+	tmp = ft_split(v->valwe, ' ');
+	tmp[1][ft_strlen(tmp[1]) - 1] = 0;
+	v->wallw.img = mlx_xpm_file_to_image(v->mlx, tmp[1], &v->wallw.x, &v->wallw.y);
+	ft_clean_tstr(tmp, 0);
 	if (!v->wallw.img)
 		ft_close_event(v);
 	v->wallw.ad = mlx_get_data_addr(v->wallw.img, &v->wallw.bpp, &v->wallw.llen, &v->wallw.en);
+	if (v->wallw.x != v->walle.x && v->wallw.x != v->walln.x && v->wallw.x != v->walls.x)
+		return (ft_printf("Error\nSprites size of different sizes\n"), ft_close_event(v), (void) 1);
+	if (v->wallw.y != v->walle.x && v->wallw.y != v->walln.x && v->wallw.y != v->walls.x)
+		return (ft_printf("Error\nSprites size of different sizes\n"), ft_close_event(v), (void) 1);
 }
 
 void	ft_init_mlx(t_v *var)
 {
+	var->mlx = 0;
+	var->win = 0;
+	var->ig2.img = 0;
+	var->ig3.img = 0;
 	var->mlx = mlx_init();
 	if (!var->mlx)
 		return (exit(1));
@@ -399,7 +412,6 @@ void	ft_init_mlx(t_v *var)
 	if (!var->ig3.img)
 		ft_stop_all(var, 1);
 	var->ig3.ad = mlx_get_data_addr(var->ig3.img, &var->ig3.bpp, &var->ig3.llen, &var->ig3.en);
-	
 	mlx_hook(var->win, 2, 1L << 0, ft_keypress_event, var);
 	mlx_hook(var->win, 17, 1L << 17, ft_close_event, var);
 	ft_init_map_value(var);
@@ -411,11 +423,13 @@ void	ft_init_mlx(t_v *var)
 	mlx_loop(var->mlx);
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	t_v var;
 
-	ft_init_map(&var);
+	(void)argc;
+	(void)argv;
+	ft_parsing_map(argv[1], &var);
 	ft_init_data(&var);
 	ft_init_mlx(&var);
 	exit(0);

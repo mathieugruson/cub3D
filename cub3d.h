@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:54:34 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/25 13:40:10 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/25 22:05:58 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,54 +51,57 @@ typedef struct s_raycast
 }	t_raycast;
 
 typedef struct s_data {
-	void	*img;
-	char	*ad;
-	int		pos;
-	int		addr_use;
-	int		bpp;
-	int		llen;
-	int		en;
-	int		x;
-	int		y;
-	int		color1;
-	int		color2;
-	int		color3;
+	void		*img;
+	char		*ad;
+	int			pos;
+	int			addr_use;
+	int			bpp;
+	int			llen;
+	int			en;
+	int			x;
+	int			y;
+	int			color1;
+	int			color2;
+	int			color3;
 
 }	t_data;
 
 typedef struct s_map
 {
-	char	**map;
-	int		x;
-	int		y;
-	int		px;
-	int		py;
-	double	ppx;
-	double	ppy;
-	int		degree;
-	int		degree_status;
-	double	resultx;
-	double	resulty;
-	double	resultx2;
-	double	resulty2;
-	double	pixelx;
-	double	pixely;
-	double	ppxux;
-	double	ppyuy;
-	double	ppxrx;
-	double	ppyry;
-	double	ppxlx;
-	double	ppyly;
-	int 	pixels;
-	int 	dir;
+	char		**map;
+	char		**map2;
+	int			x;
+	int			y;
+	int			px;
+	int			py;
+	double		ppx;
+	double		ppy;
+	int			degree;
+	int			degree_status;
+	double		resultx;
+	double		resulty;
+	double		resultx2;
+	double		resulty2;
+	double		pixelx;
+	double		pixely;
+	int 		pixels;
+	int 		dir;
 }	t_map;
 
 typedef struct s_var
 {
 	void	*mlx;
 	void	*win;
-	void	*mlx2;
-	void	*win2;
+	char		**args;
+	char		pos;
+	long int	valfrgb[3];
+	long int	valcrgb[3];
+	char		*valf;
+	char		*valc;
+	char		*valno;
+	char		*valso;
+	char		*valwe;
+	char		*valea;
 	t_data	ig;
 	t_data	ig2;
 	t_data	ig3;
@@ -109,12 +112,14 @@ typedef struct s_var
 	t_map	m;
 }	t_v;
 
+
 #define XSIZE 64
 
 /* cub3d.c */
 void	ft_my_mlx_pixel_put(t_data *data, int i, int j, int color);
+void	ft_clean_map(t_v *v, int i);
 unsigned int	ft_get_color(t_data *data, int x, int y);
-int	ft_rgb_to_int(int t, int r, int g, int b);
+int		ft_rgb_to_int(int t, int r, int g, int b);
 double	find_end_x(double degree);
 double	find_end_y(double degree);
 int		ft_close_event(t_v *v);
@@ -137,9 +142,7 @@ void	ft_moove_display(t_v *v);
 int		ft_moove_player(t_v *v, int degree);
 int		ft_moove_ray(t_v *v, int sense);
 
-
 /* ft_display3d.c */
-
 void	ft_draw_wall_ratio(t_v *v, t_data d, t_raycast *rc);
 void	ft_draw_texture_and_floor(t_v *v, t_raycast *rc);
 void	init_raycast_value(t_v *v, t_raycast *rc);
@@ -147,12 +150,37 @@ void	ft_display_3d(t_v *v, int y, int x);
 
 /* ft_raycast.c */
 
-void	find_diry(t_v *v, double pixely, double pixelx, char *dir);
-void	find_dirx(t_v *v, double pixely, double pixelx, char *dir);
+void	find_diry(t_v *v, double pixely, double pixelx, char *dir, t_raycast *rc);
+void	find_dirx(t_v *v, double pixely, double pixelx, char *dir, t_raycast *rc);
 void	collect_raycat_value_y(t_v *v, t_raycast *rc, int y, int x);
 void	collect_raycat_value_x(t_v *v, t_raycast *rc, int y, int x);
 int		ft_ray_cast(t_v *v, int y, int x, t_raycast *rc);
 
+/* map_init.c */
+void	ft_fd_error(void);
+void	ft_str_error(void);
+int		ft_size_init_map(char *argv);
+char	**ft_init_tmap(char *argv, int j);
+int		ft_ctrl_map_size(t_v *v, int i);
+int		ft_elements_map_control(t_v *v);
+int		ft_contour_map_control(t_v *v, int i);
+int		ft_parsing_map(char *argv, t_v *v);
+void	ft_print_tab(char **str);
+void	ft_clean_tstr(char **str, int i);
+
+/* map_checker.c */
+int		ft_invasion_checker_condition(t_v *v, int x, int y, char c);
+int		ft_invasion_checker(t_v *v, char c);
+void	ft_invasion_loop_checker(t_v *v, int x, int y, char c);
+int		ft_invasion_loop(t_v *v, char c);
+void	ft_argv_check(char *argv, t_v *v);
+
+/* map_attack.c */
+int		ft_west_offensive(int x, int y, t_v *v, char c);
+int		ft_north_offensive(int x, int y, t_v *v, char c);
+int		ft_east_offensive(int x, int y, t_v *v, char c);
+int		ft_south_offensive(int x, int y, t_v *v, char c);
+int		ft_invasion_propagation(int x, int y, t_v *v, char c);
+
 
 #endif
-

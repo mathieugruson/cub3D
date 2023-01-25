@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   moove.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 16:01:48 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/25 15:13:23 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/25 16:18:27 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,6 @@ double	find_wall_y(double degree)
 
 void	ft_moove_display(t_v *v)
 {
-	if (v->ig.img)
-		mlx_destroy_image(v->mlx, v->ig.img);
-	v->ig.img = mlx_new_image(v->mlx, ((v->m.x) * XSIZE), (v->m.y * XSIZE));
-	if (!v->ig.img)
-		ft_stop_all(v, 1);
-	v->ig.ad = mlx_get_data_addr(v->ig.img, &v->ig.bpp, &v->ig.llen, &v->ig.en);
 	if (v->ig2.img)
 		mlx_destroy_image(v->mlx, v->ig2.img);
 	v->ig2.img = mlx_new_image(v->mlx, 960, 600);

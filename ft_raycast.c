@@ -6,44 +6,57 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 20:22:08 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/25 15:11:32 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/25 23:52:20 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	find_diry(t_v *v, double pixely, double pixelx, char *dir)
+int is_wall(char c)
 {
-	static int	i = 0;
+	if (c == '0')
+		return (0);
+	if (c == 'N')
+		return (0);
+	if (c == 'W')
+		return (0);
+	if (c == 'S')
+		return (0);
+	if (c == 'E')
+		return (0);
+	return (1);
+}
 
-	i++;
-	if (v->m.map[((int)pixely + 2) / XSIZE][(int)pixelx / XSIZE] == '0')
+void	find_diry(t_v *v, double pixely, double pixelx, char *dir, t_raycast *rc)
+{
+	(void)rc;
+
+	// printf("diry N rc->pixely : %f y : %d, rc->pixelx %f x : %d\n", pixely, ((int)pixely + 2) / XSIZE, pixelx, (int)rc->pixelx / XSIZE);
+	// printf("diry S rc->pixely : %f y : %d, rc->pixelx %f x : %d\n", pixely, ((int)pixely - 2) / XSIZE, pixelx, (int)rc->pixelx / XSIZE);
+	if (!is_wall(v->m.map[((int)pixely + 2) / XSIZE][(int)pixelx / XSIZE]))
 	{
 		*dir = 'N';
 	}
-	if (v->m.map[((int)pixely - 2) / XSIZE][(int)pixelx / XSIZE] == '0')
+	else if (!is_wall(v->m.map[((int)pixely - 2) / XSIZE][(int)pixelx / XSIZE]))
 	{
 		*dir = 'S';
 	}
-	if (*dir != 0 && (*dir < 64 || *dir > 90))
-		*dir = *(dir - 1);
 }
 
-void	find_dirx(t_v *v, double pixely, double pixelx, char *dir)
+void	find_dirx(t_v *v, double pixely, double pixelx, char *dir, t_raycast *rc)
 {
-	static int	i = 0;
+	(void)rc;
 
-	i++;
-	if (v->m.map[(int)pixely / XSIZE][((int)pixelx + 2) / XSIZE] == '0')
+	// printf("diry O rc->pixely : %f y : %d, rc->pixelx %f x : %d\n", pixely, ((int)pixely) / XSIZE, pixelx, ((int)pixelx + 2) / XSIZE);
+	// printf("diry E rc->pixely : %f y : %d, rc->pixelx %f x : %d\n", pixely, ((int)pixely) / XSIZE, pixelx, ((int)pixelx - 2) / XSIZE);
+	if (!is_wall(v->m.map[(int)pixely / XSIZE][((int)pixelx + 2) / XSIZE]))
 	{
 		*dir = 'O';
 	}
-	if (v->m.map[(int)pixely / XSIZE][((int)pixelx - 2) / XSIZE] == '0')
+	else if (!is_wall(v->m.map[(int)pixely / XSIZE][((int)pixelx - 2) / XSIZE]))
 	{
 		*dir = 'E';
 	}
-	if (*dir != 0 && (*dir < 64 || *dir > 90))
-		*dir = *(dir - 1);
 }
 
 void	collect_raycat_value_y(t_v *v, t_raycast *rc, int y, int x)
@@ -57,11 +70,13 @@ void	collect_raycat_value_y(t_v *v, t_raycast *rc, int y, int x)
 	resulty = ((double)y - rc->pixely) * ((double)y - rc->pixely);
 	view = 30 - rc->i;
 	radian = (180 - 90 - view) * M_PI / 180;
-	find_dirx(v, rc->pixely, rc->pixelx, &rc->dir[rc->index]);
-	rc->texture[rc->index] = (int)rc->pixely % 64;
+	find_dirx(v, rc->pixely, rc->pixelx, &rc->dir[rc->index], rc);
+	rc->texture[rc->index] = (int)rc->pixely % v->walle.y;
 	rc->tab[rc->index] = sqrt(resultx + resulty);
+	// printf("y1 rc->tab[rc->index] %f, index %d\n", rc->tab[rc->index], rc->index);
 	rc->tab[rc->index] = rc->tab[rc->index] * sin(radian);
-	rc->tab[rc->index] = (64 / rc->tab[rc->index] * (277 * 3));
+	rc->tab[rc->index] = (v->walle.y / rc->tab[rc->index] * (277 * 3));
+	// printf("y2 rc->tab[rc->index] %f, index %d\n", rc->tab[rc->index], rc->index);
 }
 
 void	collect_raycat_value_x(t_v *v, t_raycast *rc, int y, int x)
@@ -75,17 +90,20 @@ void	collect_raycat_value_x(t_v *v, t_raycast *rc, int y, int x)
 	resulty = ((double)y - rc->pixely) * ((double)y - rc->pixely);
 	view = 30 - rc->i;
 	radian = (180 - 90 - view) * M_PI / 180;
-	find_diry(v, rc->pixely, rc->pixelx, &rc->dir[rc->index]);
-	rc->texture[rc->index] = (int)rc->pixelx % 64;
+	find_diry(v, rc->pixely, rc->pixelx, &rc->dir[rc->index], rc);
+	rc->texture[rc->index] = (int)rc->pixelx % v->walle.y;
 	rc->tab[rc->index] = sqrt(resultx + resulty);
+	// printf("x1 rc->tab[rc->index] : %f, index %d\n", rc->tab[rc->index], rc->index);
 	rc->tab[rc->index] = rc->tab[rc->index] * sin(radian);
-	rc->tab[rc->index] = (64 / rc->tab[rc->index] * (277 * 3));
+	rc->tab[rc->index] = (v->walle.y / rc->tab[rc->index] * (277 * 3));
+	// printf("x2 rc->tab[rc->index] : %f, index %d\n", rc->tab[rc->index], rc->index);
 }
 
 int	ft_ray_cast(t_v *v, int y, int x, t_raycast *rc)
 {
 	rc->resultx = find_end_x(rc->left + rc->i);
 	rc->resulty = find_end_y(rc->left + rc->i);
+	// printf("rc.left + rc.i %f, i %d\n", rc->left + rc->i, i++);
 	rc->pixelx = x;
 	rc->pixely = y;
 	rc->pixels = sqrt((rc->resultx * rc->resultx) \
@@ -100,10 +118,14 @@ int	ft_ray_cast(t_v *v, int y, int x, t_raycast *rc)
 		}
 		rc->pixelx += rc->resultx;
 		if (v->m.map[(int)rc->pixely / XSIZE][(int)rc->pixelx / XSIZE] == '1')
+		{
 			return (collect_raycat_value_y(v, rc, y, x), 0);
+		}
 		rc->pixely += rc->resulty;
 		if (v->m.map[(int)rc->pixely / XSIZE][(int)rc->pixelx / XSIZE] == '1')
+		{
 			return (collect_raycat_value_x(v, rc, y, x), 0);
+		}
 	}
 	return (0);
 }
