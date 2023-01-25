@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 16:10:11 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/25 23:25:06 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/25 23:54:46 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,13 @@ void	ft_draw_wall_ratio(t_v *v, t_data d, t_raycast *rc)
 	ratio = ((double)d.y / wall_size);
 	ratio *= rc->i;
 	color = ft_get_color(&d, rc->texture[rc->index], ratio);
-	// printf("x (y?): %d, y (index donc x): %d\n", x, y);
 	ft_my_mlx_pixel_put(&v->ig2, x, y, color);
 }
 
 void	ft_draw_texture_and_floor(t_v *v, t_raycast *rc)
 {
-	// printf("rc->i %f, rc->tab[rc->index] %f, rc->index %d, rc->printy %f\n", rc->i, rc->tab[rc->index], rc->index, rc->printy);
 	while (rc->i <= rc->tab[rc->index] && (rc->printy + rc->i) <= 599)
 	{
-		// printf("rc->dir[rc->index] %c\n", rc->dir[rc->index]);
 		if (rc->dir[rc->index] == 'N' && (rc->printy + rc->i) > 0)
 			ft_draw_wall_ratio(v, v->walln, rc);
 		if (rc->dir[rc->index] == 'S' && (rc->printy + rc->i) > 0)
@@ -84,11 +81,9 @@ void	ft_display_3d(t_v *v, int y, int x)
 	rc.index = 0;
 	while (rc.index <= 959)
 	{
-		// printf("d1\n");
 		rc.printy = (Y_3D / 2) - (rc.tab[rc.index] / 2);
 		while (rc.i < rc.printy && rc.i <= 599)
 		{
-			// printf("d2\n");
 			ft_my_mlx_pixel_put(&v->ig2, rc.i++, rc.index, \
 			ft_rgb_to_int(0, v->valcrgb[0], v->valcrgb[1], v->valcrgb[2]));
 		}
