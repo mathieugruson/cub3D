@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 10:54:34 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/25 22:05:58 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/26 12:08:52 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,11 +150,15 @@ void	ft_display_3d(t_v *v, int y, int x);
 
 /* ft_raycast.c */
 
-void	find_diry(t_v *v, double pixely, double pixelx, char *dir, t_raycast *rc);
-void	find_dirx(t_v *v, double pixely, double pixelx, char *dir, t_raycast *rc);
 void	collect_raycat_value_y(t_v *v, t_raycast *rc, int y, int x);
 void	collect_raycat_value_x(t_v *v, t_raycast *rc, int y, int x);
 int		ft_ray_cast(t_v *v, int y, int x, t_raycast *rc);
+
+/* find_wall_dir.c */
+
+int		is_wall(char c);
+void	find_wall_dir_y(t_v *v, double pixely, double pixelx, char *dir);
+void	find_wall_dir_x(t_v *v, double pixely, double pixelx, char *dir);
 
 /* map_init.c */
 void	ft_fd_error(void);

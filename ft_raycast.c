@@ -6,54 +6,11 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 20:22:08 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/25 23:55:06 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/26 12:07:34 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-int is_wall(char c)
-{
-	if (c == '0')
-		return (0);
-	if (c == 'N')
-		return (0);
-	if (c == 'W')
-		return (0);
-	if (c == 'S')
-		return (0);
-	if (c == 'E')
-		return (0);
-	return (1);
-}
-
-void	find_diry(t_v *v, double pixely, double pixelx, char *dir, t_raycast *rc)
-{
-	(void)rc;
-
-	if (!is_wall(v->m.map[((int)pixely + 2) / XSIZE][(int)pixelx / XSIZE]))
-	{
-		*dir = 'N';
-	}
-	else if (!is_wall(v->m.map[((int)pixely - 2) / XSIZE][(int)pixelx / XSIZE]))
-	{
-		*dir = 'S';
-	}
-}
-
-void	find_dirx(t_v *v, double pixely, double pixelx, char *dir, t_raycast *rc)
-{
-	(void)rc;
-
-	if (!is_wall(v->m.map[(int)pixely / XSIZE][((int)pixelx + 2) / XSIZE]))
-	{
-		*dir = 'O';
-	}
-	else if (!is_wall(v->m.map[(int)pixely / XSIZE][((int)pixelx - 2) / XSIZE]))
-	{
-		*dir = 'E';
-	}
-}
 
 void	collect_raycat_value_y(t_v *v, t_raycast *rc, int y, int x)
 {
@@ -66,7 +23,7 @@ void	collect_raycat_value_y(t_v *v, t_raycast *rc, int y, int x)
 	resulty = ((double)y - rc->pixely) * ((double)y - rc->pixely);
 	view = 30 - rc->i;
 	radian = (180 - 90 - view) * M_PI / 180;
-	find_dirx(v, rc->pixely, rc->pixelx, &rc->dir[rc->index], rc);
+	find_wall_dir_x(v, rc->pixely, rc->pixelx, &rc->dir[rc->index]);
 	rc->texture[rc->index] = (int)rc->pixely % v->walle.y;
 	rc->tab[rc->index] = sqrt(resultx + resulty);
 	rc->tab[rc->index] = rc->tab[rc->index] * sin(radian);
@@ -84,7 +41,7 @@ void	collect_raycat_value_x(t_v *v, t_raycast *rc, int y, int x)
 	resulty = ((double)y - rc->pixely) * ((double)y - rc->pixely);
 	view = 30 - rc->i;
 	radian = (180 - 90 - view) * M_PI / 180;
-	find_diry(v, rc->pixely, rc->pixelx, &rc->dir[rc->index], rc);
+	find_wall_dir_y(v, rc->pixely, rc->pixelx, &rc->dir[rc->index]);
 	rc->texture[rc->index] = (int)rc->pixelx % v->walle.y;
 	rc->tab[rc->index] = sqrt(resultx + resulty);
 	rc->tab[rc->index] = rc->tab[rc->index] * sin(radian);
@@ -103,20 +60,16 @@ int	ft_ray_cast(t_v *v, int y, int x, t_raycast *rc)
 	rc->resulty /= rc->pixels;
 	while (1)
 	{
-		if ((rc->pixely > v->m.ppy - 100) && (rc->pixely < v->m.ppy + 100) && (rc->pixelx > v->m.ppx - 100) && (rc->pixelx < v->m.ppx + 100))
-		{	
-			ft_my_mlx_pixel_put(&v->ig3, 100 - (v->m.ppy - rc->pixely), 100 - (v->m.ppx - rc->pixelx), ft_rgb_to_int(0, 50, 150, 250));
-		}
+		if ((rc->pixely > v->m.ppy - 100) && (rc->pixely < v->m.ppy + 100) && \
+		(rc->pixelx > v->m.ppx - 100) && (rc->pixelx < v->m.ppx + 100))
+			ft_my_mlx_pixel_put(&v->ig3, 100 - (v->m.ppy - rc->pixely), 100 - \
+			(v->m.ppx - rc->pixelx), ft_rgb_to_int(0, 50, 150, 250));
 		rc->pixelx += rc->resultx;
 		if (v->m.map[(int)rc->pixely / XSIZE][(int)rc->pixelx / XSIZE] == '1')
-		{
 			return (collect_raycat_value_y(v, rc, y, x), 0);
-		}
 		rc->pixely += rc->resulty;
 		if (v->m.map[(int)rc->pixely / XSIZE][(int)rc->pixelx / XSIZE] == '1')
-		{
 			return (collect_raycat_value_x(v, rc, y, x), 0);
-		}
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 16:10:11 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/25 23:54:46 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/26 12:10:15 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,8 @@ void	ft_display_3d(t_v *v, int y, int x)
 	{
 		rc.printy = (Y_3D / 2) - (rc.tab[rc.index] / 2);
 		while (rc.i < rc.printy && rc.i <= 599)
-		{
 			ft_my_mlx_pixel_put(&v->ig2, rc.i++, rc.index, \
 			ft_rgb_to_int(0, v->valcrgb[0], v->valcrgb[1], v->valcrgb[2]));
-		}
 		rc.i = 0;
 		ft_draw_texture_and_floor(v, &rc);
 		rc.i = 0;
