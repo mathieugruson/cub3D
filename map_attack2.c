@@ -1,27 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   map_attack2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/03 16:58:57 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/26 20:29:26 by mgruson          ###   ########.fr       */
+/*   Created: 2023/01/26 19:29:10 by mgruson           #+#    #+#             */
+/*   Updated: 2023/01/26 19:31:08 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "cub3d.h"
 
-size_t	ft_strlen(const char *str)
+void	propagate_player(t_v *v, int tx, int ty, char c)
 {
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (i);
-	while (str[i] != '\0')
-	{
-		i++;
-	}
-	return (i);
+	if (v->m.map[ty][tx] != '1' && v->m.map[ty][tx] != c \
+	&& v->m.map[ty][tx] != ' ' && v->m.map[ty][tx] != '\n')
+		v->m.map[ty][tx] = c;
 }

@@ -6,7 +6,7 @@
 #    By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/01 12:07:22 by chillion          #+#    #+#              #
-#    Updated: 2023/01/26 12:09:02 by mgruson          ###   ########.fr        #
+#    Updated: 2023/01/26 20:27:26 by mgruson          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,12 +36,28 @@ NC = \033[0m
 
 SRCS =	cub3d.c \
 		moove.c \
+		moove2.c \
 		ft_display_3d.c \
 		ft_raycast.c \
+		ft_raycast2.c \
 		map_attack.c \
+		map_attack2.c \
 		map_checker.c \
+		map_checker2.c \
 		map_init.c \
-		find_wall_dir.c \
+		ft_init_sprites.c \
+		ft_init_map_value.c \
+		color.c \
+		ft_init.c \
+		ft_init2.c \
+		ft_draw_line_map.c \
+		ft_check_display_map.c \
+		ft_clean.c \
+		cub3d_utils.c \
+		ft_control.c \
+		ft_check_arg.c \
+		ft_check_arg2.c \
+		ft_error.c \
 
 LIBFT := libs/libft/libft.a
 MLX := libs/minilibx-linux/libmlx_Linux.a

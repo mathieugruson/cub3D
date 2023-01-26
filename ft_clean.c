@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_clean.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/03 16:58:57 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/26 20:29:26 by mgruson          ###   ########.fr       */
+/*   Created: 2023/01/26 18:31:16 by mgruson           #+#    #+#             */
+/*   Updated: 2023/01/26 18:43:35 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "cub3d.h"
 
-size_t	ft_strlen(const char *str)
+void	ft_clean_tstr(char **str, int i)
 {
-	int	i;
-
 	i = 0;
 	if (!str)
-		return (i);
-	while (str[i] != '\0')
+		return ;
+	while (str[i])
 	{
+		if (str[i])
+			free(str[i]);
 		i++;
 	}
-	return (i);
+	if (str)
+	{
+		free(str);
+		str = NULL;
+	}
 }
