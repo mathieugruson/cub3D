@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 18:11:11 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/26 19:29:29 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/26 23:04:31 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	ft_west_offensive(int x, int y, t_v *v, char c)
 	&& v->m.map[ty][tx] != ' ' && v->m.map[ty][tx] != '\n')
 	{
 		propagate_player(v, tx, ty, c);
-		if (ty - 1 > 0 && (int)ft_strlen(v->m.map[ty - 1]) >= tx)
+		if (ty - 1 >= 0 && (int)ft_strlen(v->m.map[ty - 1]) >= tx)
 		{
 			if (v->m.map[ty - 1][tx] != '\0' \
 			&& v->m.map[ty - 1][tx] != '1' && v->m.map[ty - 1][tx] != c \
@@ -48,7 +48,7 @@ void	ft_north_offensive(int x, int y, t_v *v, char c)
 
 	ty = y;
 	tx = x;
-	while (v->m.map[ty][tx] && v->m.map[ty][tx] != '1' \
+	while (ty >= 0 && v->m.map[ty][tx] && v->m.map[ty][tx] != '1' \
 	&& v->m.map[ty][tx] != ' ' && v->m.map[ty][tx] != '\n')
 	{
 		propagate_player(v, tx, ty, c);
@@ -79,7 +79,7 @@ void	ft_east_offensive(int x, int y, t_v *v, char c)
 	&& v->m.map[ty][tx] != ' ' && v->m.map[ty][tx] != '\n')
 	{
 		propagate_player(v, tx, ty, c);
-		if (ty - 1 > 0 && (int)ft_strlen(v->m.map[ty - 1]) >= tx)
+		if (ty - 1 >= 0 && (int)ft_strlen(v->m.map[ty - 1]) >= tx)
 		{
 			if (v->m.map[ty - 1][tx] && v->m.map[ty - 1][tx] != '1' \
 			&& v->m.map[ty - 1][tx] != c && v->m.map[ty - 1][tx] != ' ' \

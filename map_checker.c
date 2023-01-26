@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 18:22:57 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/26 19:56:35 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/26 23:05:56 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	check_final_wall_part_2(t_v *v, int i, int x, int y)
 {
 	i = x;
-	if (x == 0)
+	if (x == 0 || y == 0)
 		return (8);
 	if (y - 1 > 0 && (int)ft_strlen(v->m.map[y - 1]) <= i)
 		return (1);
@@ -85,7 +85,7 @@ int	ft_invasion_loop(t_v *v, char c)
 		return (ft_invasion_loop(v, c));
 	i = check_final_wall(v, c);
 	if (i >= 1)
-		return (ft_printf("I=%d,Error\nPlayer map part not closed\n", i), 1);
+		return (ft_printf("Error\nPlayer map part not closed\n", i), 1);
 	return (0);
 }
 
