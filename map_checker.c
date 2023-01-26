@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 18:22:57 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/26 23:11:52 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/26 23:16:50 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ int	check_final_wall_part_2(t_v *v, int i, int x, int y)
 		return (2);
 	if (v->m.map[y][x + 1] != '1' && v->m.map[y][x + 1] != v->pos)
 		return (3);
-	if (y - 1 >= 0 && (int)ft_strlen(v->m.map[y - 1]) >= x)
-	{
-		if (v->m.map[y - 1][x] != '1' && v->m.map[y - 1][x] != v->pos)
-			return (4);
-	}
+	if (y - 1 >= 0 && v->m.map[y][x - 1] != '1' && v->m.map[y][x - 1] != v->pos)
+		return (3);
+	if (y - 1 >= 0 && (int)ft_strlen(v->m.map[y - 1]) >= x && \
+	v->m.map[y - 1][x] != '1' && v->m.map[y - 1][x] != v->pos)
+		return (4);
 	if (v->m.map[y + 1] && (int)ft_strlen(v->m.map[y + 1]) >= x)
 	{
 		if (v->m.map[y + 1][x] != '1' && v->m.map[y + 1][x] != v->pos)

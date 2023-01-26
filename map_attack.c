@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 18:11:11 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/26 23:04:31 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/26 23:20:07 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,12 +108,9 @@ void	ft_south_offensive(int x, int y, t_v *v, char c)
 	&& v->m.map[ty][tx] != ' ' && v->m.map[ty][tx] != '\n')
 	{
 		propagate_player(v, tx, ty, c);
-		if (tx - 1 >= 0)
-		{
-			if (v->m.map[ty][tx - 1] != '1' \
-			&& v->m.map[ty][tx - 1] != c && v->m.map[ty][tx - 1] != ' ')
+		if (tx - 1 >= 0 && v->m.map[ty][tx - 1] != '1' && \
+		v->m.map[ty][tx - 1] != c && v->m.map[ty][tx - 1] != ' ')
 				v->m.map[ty][tx - 1] = c;
-		}
 		if (v->m.map[ty][tx + 1] && v->m.map[ty][tx + 1] != '1' \
 		&& v->m.map[ty][tx + 1] != c && v->m.map[ty][tx + 1] != ' ' \
 		&& v->m.map[ty][tx + 1] != '\n')

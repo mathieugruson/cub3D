@@ -6,7 +6,7 @@
 /*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 19:11:00 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/26 20:18:36 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/26 23:18:40 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_invasion_checker_condition(t_v *v, int x, int y, char c)
 {
-	if (v->m.map[y][x - 1] != '1' && v->m.map[y][x - 1] != c \
+	if (x - 1 >= 0 && v->m.map[y][x - 1] != '1' && v->m.map[y][x - 1] != c \
 	&& v->m.map[y][x - 1] != ' ' && v->m.map[y][x - 1] != 'n')
 		return (1);
 	if (v->m.map[y][x + 1])
@@ -67,7 +67,7 @@ int	ft_invasion_checker(t_v *v, char c)
 
 void	ft_invasion_loop_checker(t_v *v, int x, int y, char c)
 {
-	if (v->m.map[y][x - 1] != '1' && v->m.map[y][x - 1] != c \
+	if (x - 1 >= 0 && v->m.map[y][x - 1] != '1' && v->m.map[y][x - 1] != c \
 	&& v->m.map[y][x - 1] != ' ')
 		ft_invasion_propagation(x, y, v, c);
 	if (v->m.map[y][x + 1])
@@ -76,7 +76,7 @@ void	ft_invasion_loop_checker(t_v *v, int x, int y, char c)
 		&& v->m.map[y][x + 1] != ' ')
 			ft_invasion_propagation(x, y, v, c);
 	}
-	if (y - 1 > 0 && (int)ft_strlen(v->m.map[y - 1]) >= x)
+	if (y - 1 >= 0 && (int)ft_strlen(v->m.map[y - 1]) >= x)
 	{
 		if (v->m.map[y - 1][x] != '1' && v->m.map[y - 1][x] != c \
 		&& v->m.map[y - 1][x] != ' ' && v->m.map[y - 1][x])
