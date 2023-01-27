@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_draw_line_map.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 17:46:40 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/27 12:06:55 by chillion         ###   ########.fr       */
+/*   Updated: 2023/01/26 20:24:42 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	ft_draw_player_dir(t_v *v, int degree)
 		(r.pixelx > v->m.ppx - 100) && (r.pixelx < v->m.ppx + 100))
 			ft_my_mlx_pixel_put(&v->ig3, 100 - (v->m.ppy - r.pixely), 100 - \
 			(v->m.ppx - r.pixelx), ft_rgb_to_int(0, 250, 250, 250));
+		mlx_put_image_to_window(v->mlx, v->win, v->ig3.img, 20, 380);
 		r.pixelx += r.resultx;
 		r.pixely += r.resulty;
 		if (r.i++ == (XSIZE / 10))

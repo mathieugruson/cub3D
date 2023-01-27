@@ -3,17 +3,19 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+         #
+#    By: chillion <chillion@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/01 12:07:22 by chillion          #+#    #+#              #
-#    Updated: 2023/01/26 20:27:26 by mgruson          ###   ########.fr        #
+#    Updated: 2023/01/27 20:30:55 by chillion         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .PHONY : all test norm clean fclean re
 
 NAME := cub3d.a
-SOFT_NAME := cub3d
+SOFT_NAME := cub3D
+NAME_BONUS := cub3d_bonus.a
+SOFT_BONUS := cub3D_bonus
 
 CC := gcc
 FLAGS := -g3 -Wall -Wextra -Werror -I includes/
@@ -34,30 +36,15 @@ MAGENTA = \033[0;35m
 CYAN = \033[0;36m
 NC = \033[0m
 
-SRCS =	cub3d.c \
-		moove.c \
-		moove2.c \
-		ft_display_3d.c \
-		ft_raycast.c \
-		ft_raycast2.c \
-		map_attack.c \
-		map_attack2.c \
-		map_checker.c \
-		map_checker2.c \
-		map_init.c \
-		ft_init_sprites.c \
-		ft_init_map_value.c \
-		color.c \
-		ft_init.c \
-		ft_init2.c \
-		ft_draw_line_map.c \
-		ft_check_display_map.c \
-		ft_clean.c \
-		cub3d_utils.c \
-		ft_control.c \
-		ft_check_arg.c \
-		ft_check_arg2.c \
-		ft_error.c \
+SRCS =	color.c	cub3d.c	cub3d_utils.c	ft_check_arg2.c	ft_check_arg.c	ft_check_display_map.c	\
+		ft_clean.c	ft_control.c	ft_display_3d.c	ft_draw_line_map.c	ft_error.c	ft_init2.c	\
+		ft_init.c	ft_init_map_value.c	ft_init_sprites.c	ft_raycast2.c	ft_raycast.c	map_attack2.c	\
+		map_attack.c	map_checker2.c	map_checker.c	map_init.c	moove2.c	moove.c	\
+
+BONUS =	color.c	cub3d_bonus.c	cub3d_utils.c	ft_check_arg2.c	ft_check_arg.c	ft_check_display_map.c	\
+		ft_clean.c	ft_control.c	ft_display_3d.c	ft_draw_line_map_bonus.c	ft_error.c	ft_init2.c	\
+		ft_init_bonus.c	ft_init_map_value.c	ft_init_sprites.c	ft_raycast2.c	ft_raycast_bonus.c	map_attack2.c	\
+		map_attack.c	map_checker2.c	map_checker.c	map_init.c	moove2_bonus.c	moove_bonus.c	\
 
 LIBFT := libs/libft/libft.a
 MLX := libs/minilibx-linux/libmlx_Linux.a
@@ -76,7 +63,7 @@ OBJF := .cache_exists
 all : $(OBJF) ${LIBFT} ${SOFT_NAME}
 
 $(OBJF) :
-	@touch .cache_exists
+	@touch ${OBJF}
 	@mkdir -p ${OBJ_DIR}
 
 ${LIBFT} :
@@ -97,6 +84,13 @@ ${OBJ_DIR}%.o : %.c
 ${SOFT_NAME} : ${NAME}
 	@echo "${BLUE}###${NC}Creation du fichier ${SOFT_NAME}${BLUE}###${ORANGE}"
 	${CC} ${NAME} ${FLAGS} ${MLXFLAGS} -o ${SOFT_NAME}
+	@echo "${NC}"
+
+bonus : $(OBJF) ${LIBFT} ${SOFT_BONUS}
+
+${SOFT_BONUS} : ${BOBJ}
+	@echo "${BLUE}###${NC}Creation du fichier ${SOFT_BONUS}${BLUE}###${ORANGE}"
+	${CC} ${BOBJ} ${LIBFT} ${FLAGS} ${MLXFLAGS} -o ${SOFT_BONUS}
 	@echo "${NC}"
 
 clean : 

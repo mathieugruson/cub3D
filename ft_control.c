@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_control.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 18:44:37 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/26 20:01:24 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/27 20:41:57 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,14 @@ int	check_string(char *str, int i)
 
 int	ft_control_maparg(char *str)
 {
-	int		i;
-	int		k;
-	char	**tmp;
+	int			i;
+	long int	k;
+	char		**tmp;
 
 	i = 0;
 	tmp = NULL;
 	k = ft_strlen(str);
-	if (k < 1)
+	if (k < 1 || k > INT_MAX)
 		return (1);
 	if (check_string(str, i))
 		return (1);

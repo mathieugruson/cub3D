@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_init_sprites.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 17:17:03 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/26 20:05:24 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/27 11:46:30 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,12 @@ void	ft_init_sprites(t_v *v)
 	v->wallw.img = 0;
 	ft_init_sprites_north_south(v);
 	ft_init_sprites_est_west(v);
-	if (v->wallw.x != v->walle.x && v->wallw.x != v->walln.x \
-	&& v->wallw.x != v->walls.x)
+	if (v->wallw.x != v->walle.x || v->wallw.x != v->walln.x \
+	|| v->wallw.x != v->walls.x)
 		return (ft_printf("Error\nSprites size of different sizes\n"), \
 		ft_close_event(v), (void) 1);
-	if (v->wallw.y != v->walle.x && v->wallw.y != v->walln.x \
-	&& v->wallw.y != v->walls.x)
+	if (v->wallw.y != v->walle.x || v->wallw.y != v->walln.x \
+	|| v->wallw.y != v->walls.x)
 		return (ft_printf("Error\nSprites size of different sizes\n"), \
 		ft_close_event(v), (void) 1);
 }

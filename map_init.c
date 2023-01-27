@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 18:21:46 by chillion          #+#    #+#             */
-/*   Updated: 2023/01/26 20:10:51 by mgruson          ###   ########.fr       */
+/*   Updated: 2023/01/27 20:34:25 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,10 @@ int	ft_parsing_map(char *argv, t_v *v)
 	|| ft_check_argcolor(v->args, v))
 		return (ft_close_event(v), 1);
 	ft_keep_map_only(v->args, v);
+	if (init_max_map_size(v))
+		return (ft_printf("Error\nMap size is too big for int parsing\n"), \
+		ft_close_event(v), 1);
 	if (control_final_map(v))
 		return (ft_close_event(v), 1);
-	init_max_map_size(v);
 	return (0);
 }

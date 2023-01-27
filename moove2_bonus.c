@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   moove2.c                                           :+:      :+:    :+:   */
+/*   moove2_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 19:36:57 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/27 20:20:21 by chillion         ###   ########.fr       */
+/*   Updated: 2023/01/27 12:02:03 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ void	moove_player(int dir, t_v *v)
 	if (dir == 'H')
 		dir = ft_moove_ray(v, (-5));
 	if (dir == 1)
+	{
 		mlx_put_image_to_window(v->mlx, v->win, v->ig2.img, 0, 0);
+		mlx_put_image_to_window(v->mlx, v->win, v->ig3.img, 20, 380);
+	}
 }
 
 int	ft_keypress_event(int key, t_v *v)

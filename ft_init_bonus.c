@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_init.c                                          :+:      :+:    :+:   */
+/*   ft_init_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/26 17:43:52 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/27 12:08:21 by chillion         ###   ########.fr       */
+/*   Created: 2023/01/27 11:48:24 by chillion          #+#    #+#             */
+/*   Updated: 2023/01/27 12:08:06 by chillion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	ft_init_mlx(t_v *var)
 	ft_check_map(var);
 	ft_display_3d(var, var->m.ppy, var->m.ppx);
 	mlx_put_image_to_window(var->mlx, var->win, var->ig2.img, 0, 0);
+	mlx_put_image_to_window(var->mlx, var->win, var->ig3.img, 20, 380);
 	mlx_loop(var->mlx);
 }
 
