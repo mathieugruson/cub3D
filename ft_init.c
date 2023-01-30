@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_init.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chillion <chillion@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgruson <mgruson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 17:43:52 by mgruson           #+#    #+#             */
-/*   Updated: 2023/01/27 12:08:21 by chillion         ###   ########.fr       */
+/*   Updated: 2023/01/30 11:33:57 by mgruson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	ft_init_mlx(t_v *var)
 {
 	var->mlx = mlx_init();
 	if (!var->mlx)
-		return (exit(1));
+		return (ft_printf("Error\nMlx failed\n"), ft_close_event(var), exit(1));
 	ft_init_sprites(var);
 	init_window_and_image(var);
 	mlx_hook(var->win, 2, 1L << 0, ft_keypress_event, var);
